@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:53:02 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/07 14:02:49 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/07 15:37:24 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	print_sorted_env(char **env)
 	}
 }
 
-static char	*get_var_name(char *arg)
+char	*get_var_name(char *arg)
 {
 	int		i;
 	char	*name;
@@ -50,50 +50,6 @@ static char	*get_var_name(char *arg)
 		i++;
 	name = ft_substr(arg, 0, i);
 	return (name);
-}
-
-static void	add_to_env(t_minishell *shell, char *arg)
-{
-	char	*name;
-	int		i;
-	int		len;
-	char	**new_env;
-
-	name = get_var_name(arg);
-	if (!name)
-		return ;
-	len = ft_strlen(name);
-	i = 0;
-	while (shell->env[i])
-	{
-		if (ft_strncmp(shell->env[i], name, len) == 0
-			&& (shell->env[i][len] == '=' || shell->env[i][len] == '\0'))
-		{
-			if (ft_strchr(arg, '='))
-			{
-				free(shell->env[i]);
-				shell->env[i] = ft_strdup(arg);
-			}
-			free(name);
-			return ;
-		}
-		i++;
-	}
-	free(name);
-	i = ft_arraylen(shell->env);
-	new_env = malloc(sizeof(char *) * (i + 2));
-	if (!new_env)
-		return ;
-	i = 0;
-	while (shell->env[i])
-	{
-		new_env[i] = shell->env[i];
-		i++;
-	}
-	new_env[i] = ft_strdup(arg);
-	new_env[i + 1] = NULL;
-	free(shell->env);
-	shell->env = new_env;
 }
 
 void	mis_export(t_command *cmd, t_minishell *shell)
