@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -lreadline
 
+
 MAKEFLAGS += --no-print-directory
 
 SRCS = buit_in/mis_cd.c \
@@ -27,6 +28,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDES = -I $(CURDIR) -I $(CURDIR)/$(LIBFT_DIR)
 
 all: $(NAME)
+	@echo "minishell compiled successfully!"
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS)
 %.o: %.c
@@ -40,4 +42,5 @@ clean c:
 fclean f: clean
 	@rm -f $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
+
 re: fclean all

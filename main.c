@@ -6,32 +6,11 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/07 13:59:32 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/07 14:48:58 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	**dup_env(char **envp)
-{
-	char	**new_env;
-	int		i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	new_env = malloc(sizeof(char *) * (i + 1));
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		new_env[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
 
 void	execute_command(t_command *cmd, t_minishell *shell)
 {
@@ -74,6 +53,27 @@ void	handle_input(char *input, t_minishell *shell)
 	}
 }
 
+static char	**dup_env(char **envp)
+{
+	char	**new_env;
+	int		i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 1));
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		new_env[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	new_env[i] = NULL;
+	return (new_env);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -81,6 +81,8 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	shell.env = dup_env(envp);
 	while (1)
 	{

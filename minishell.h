@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/05 20:06:17 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/07 14:45:27 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void					mis_env(t_command *cmd, t_minishell *shell);
 void					mis_export(t_command *cmd, t_minishell *shell);
 void					mis_unset(t_command *cmd, t_minishell *shell);
 void					mis_exec(t_command *cmd, t_minishell *shell);
-
+void					signal_handler(int sig);
 int						ft_arraylen(char **array);
 void					ft_free_array(char **array);
 

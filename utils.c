@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:15:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/07 13:58:10 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/07 14:44:06 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,15 @@ void	ft_free_array(char **array)
 		i++;
 	}
 	free(array);
+}
+
+void	signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
