@@ -1,0 +1,12 @@
+minishell
+*.o
+*.a
+*.so
+*.dSYM/
+.vscode/
+.idea/
+*.swp
+*.swo
+# libft/
+.DS_Store
+*.log
