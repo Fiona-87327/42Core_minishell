@@ -50,4 +50,7 @@ void					mis_export(t_command *cmd, t_minishell *shell);
 void					mis_unset(t_command *cmd, t_minishell *shell);
 void					mis_exec(t_command *cmd, t_minishell *shell);
 
+int						ft_arraylen(char **array);
+void					ft_free_array(char **array);
+
 #endif

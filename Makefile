@@ -6,26 +6,29 @@ CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -lreadline
 
-SRCS = mis_cd.c \
-	   mis_echo.c \
-	   mis_env.c \
-	   mis_exit.c \
-	   mis_export.c \
-	   mis_pwd.c \
-	   mis_unset.c \
-	   mis_exec.c \
-	   main.c
+SRCS = buit_in/mis_cd.c \
+	   buit_in/mis_echo.c \
+	   buit_in/mis_env.c \
+	   buit_in/mis_exit.c \
+	   buit_in/mis_export.c \
+	   buit_in/mis_pwd.c \
+	   buit_in/mis_unset.c \
+	   buit_in/mis_exec.c \
+	   main.c \
+	   utils.c
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_DIR = libft
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-INCLUDES = -I include -I $(LIBFT_DIR)/include
+INCLUDES = -I $(CURDIR) -I $(CURDIR)/$(LIBFT_DIR)
 
 all: $(NAME)
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS)
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
