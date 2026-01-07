@@ -6,6 +6,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -lreadline
 
+MAKEFLAGS += --no-print-directory
+
 SRCS = buit_in/mis_cd.c \
 	   buit_in/mis_echo.c \
 	   buit_in/mis_env.c \
@@ -26,18 +28,16 @@ INCLUDES = -I $(CURDIR) -I $(CURDIR)/$(LIBFT_DIR)
 
 all: $(NAME)
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS)
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
-
+	@$(MAKE) -C $(LIBFT_DIR)
 clean c:
-	rm -f $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	@rm -f $(OBJS)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean f: clean
-	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
-
+	@rm -f $(NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 re: fclean all

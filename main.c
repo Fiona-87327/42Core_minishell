@@ -6,24 +6,11 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/05 20:22:34 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:59:32 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
 
 static char	**dup_env(char **envp)
 {
@@ -80,7 +67,7 @@ void	handle_input(char *input, t_minishell *shell)
 			cmd.args = args;
 			cmd.next = NULL;
 			execute_command(&cmd, shell);
-			free_array(args);
+			ft_free_array(args);
 		}
 		else if (args)
 			free(args);
@@ -106,6 +93,6 @@ int	main(int ac, char **av, char **envp)
 		handle_input(input, &shell);
 		free(input);
 	}
-	free_array(shell.env);
+	ft_free_array(shell.env);
 	return (0);
 }

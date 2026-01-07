@@ -6,21 +6,11 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:53:02 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/05 20:51:10 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/07 14:02:49 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	get_env_size(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-		i++;
-	return (i);
-}
 
 static int	is_valid_identifier(char *str)
 {
@@ -90,7 +80,7 @@ static void	add_to_env(t_minishell *shell, char *arg)
 		i++;
 	}
 	free(name);
-	i = get_env_size(shell->env);
+	i = ft_arraylen(shell->env);
 	new_env = malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
 		return ;
