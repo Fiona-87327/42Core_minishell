@@ -6,7 +6,6 @@ CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -lreadline
 
-
 MAKEFLAGS += --no-print-directory
 
 SRCS = buit_in/mis_cd.c \
@@ -36,6 +35,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
+
 G = \033[0;32m
 R = \033[0;31m
 Y = \033[0;33m
@@ -51,4 +51,5 @@ fclean f: clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
 	@echo "$(R)[FCLEAN]$(NC) $(NAME) has been deleted!"
+
 re: fclean all
