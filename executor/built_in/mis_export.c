@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:53:02 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/07 15:37:24 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:36:12 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	mis_export(t_command *cmd, t_minishell *shell)
 		}
 		else
 		{
-			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+			ft_putstr_fd("bash: export: `", STDERR_FILENO);
 			ft_putstr_fd(cmd->args[i], STDERR_FILENO);
 			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		}

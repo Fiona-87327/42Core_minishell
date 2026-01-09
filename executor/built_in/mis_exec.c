@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/07 12:54:54 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:54:44 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,22 @@ static char	*get_path(char *cmd, char **envp)
 	return (NULL);
 }
 
+static void	handle_exec_error(char *cmd)
+{
+	if (ft_strchr(cmd, '/'))
+	{
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	}
+	exit(127);
+}
+
 void	mis_exec(t_command *cmd, t_minishell *shell)
 {
 	char	*path;
@@ -68,12 +84,7 @@ void	mis_exec(t_command *cmd, t_minishell *shell)
 		else
 			path = get_path(cmd->args[0], shell->env);
 		if (!path || access(path, F_OK) != 0)
-		{
-			ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->args[0], STDERR_FILENO);
-			ft_putstr_fd("\n", STDERR_FILENO);
-			exit(127);
-		}
+			handle_exec_error(cmd->args[0]);
 		execve(path, cmd->args, shell->env);
 		perror("execve");
 		exit(1);
