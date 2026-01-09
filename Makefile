@@ -16,9 +16,9 @@ SRCS = buit_in/mis_cd.c \
 	   buit_in/mis_pwd.c \
 	   buit_in/mis_unset.c \
 	   buit_in/mis_exec.c \
-	   buit_in/mis_export1.c \
-	   main.c \
-	   utils.c
+	   00_utils.c \
+	   01_utils.c \
+	   main.c
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_DIR = libft
