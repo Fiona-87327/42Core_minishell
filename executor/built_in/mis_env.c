@@ -20,8 +20,11 @@ void	mis_env(t_command *cmd, t_minishell *shell)
 	env = shell->env;
 	while (*env)
 	{
-		ft_putstr_fd(*env, STDOUT_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		if (ft_strchr(*env, '='))
+		{
+			ft_putstr_fd(*env, STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
+		}
 		env++;
 	}
 }
