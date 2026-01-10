@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/09 20:04:03 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/10 15:58:44 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,11 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		input = readline("minishell$ ");
+		if (!input)
+		{
+			printf("exit\n");
+			break ;
+		}
 		handle_input(input, &shell);
 		free(input);
 	}
