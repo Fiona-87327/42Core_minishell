@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   00_utils.c                                         :+:      :+:    :+:   */
+/*   mis_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/07 13:15:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/10 14:39:40 by jiyawang         ###   ########.fr       */
+/*   Created: 2026/01/10 14:39:25 by jiyawang          #+#    #+#             */
+/*   Updated: 2026/01/10 14:45:33 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_arraylen(char **array)
+void	signal_handler(int sig)
 {
-	int	i;
-
-	i = 0;
-	if (!array)
-		return (0);
-	while (array[i])
-		i++;
-	return (i);
+	g_signal = sig;
 }
 
-void	ft_free_array(char **array)
+int	check_signal_event(void)
 {
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
+	if (g_signal == SIGINT)
 	{
-		free(array[i]);
-		i++;
+		g_signal = 0;
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	free(array);
+	return (0);
 }
