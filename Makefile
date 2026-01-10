@@ -18,6 +18,7 @@ SRCS = executor/built_in/mis_cd.c \
 	   executor/built_in/mis_exec.c \
 	   executor/utils/00_utils.c \
 	   executor/utils/01_utils.c \
+	   signal/mis_signal.c \
 	   main.c
 OBJS = $(SRCS:.c=.o)
 
