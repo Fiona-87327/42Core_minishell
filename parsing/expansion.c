@@ -6,11 +6,11 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:01:07 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/11 12:01:26 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/15 10:32:51 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 static int	mis_strcmp(char *s1, char *s2)
 {
