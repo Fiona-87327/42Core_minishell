@@ -16,6 +16,8 @@ SRCS = executor/built_in/mis_cd.c \
 	   executor/built_in/mis_pwd.c \
 	   executor/built_in/mis_unset.c \
 	   executor/built_in/mis_exec.c \
+	   executor/mis_redirections.c \
+	   executor/mis_redirections_utils.c \
 	   executor/utils/00_utils.c \
 	   executor/utils/01_utils.c \
 	   parsing/expansion.c \

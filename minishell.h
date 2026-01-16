@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/16 13:53:43 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:56:39 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ typedef struct s_checker
 
 typedef struct s_saved_fd
 {
-	int stdin_backup;
-	int stdout_backup;
-}t_saved_fd;
+	int							stdin_backup;
+	int							stdout_backup;
+}								t_saved_fd;
 
 typedef enum e_redirect_type
 {
@@ -83,5 +83,8 @@ char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
 char							**expand_args(char **args, t_minishell *shell);
+int								mis_redirections(t_redir *redir);
+void							save_original_fds(t_saved_fd *saved);
+void							restore_original_fds(t_saved_fd *saved);
 
 #endif
