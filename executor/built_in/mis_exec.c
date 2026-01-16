@@ -79,6 +79,8 @@ void	mis_exec(t_command *cmd, t_minishell *shell)
 		return ;
 	if (pid == 0)
 	{
+		if (mis_redirections(cmd->redirs) == -1)
+			exit(1);
 		if (ft_strchr(cmd->args[0], '/'))
 			path = cmd->args[0];
 		else

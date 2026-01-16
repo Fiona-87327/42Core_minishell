@@ -39,3 +39,16 @@ void	token_add_back(t_token **lst, t_token *new)
 		tmp = tmp->next;
 	tmp->next = new;
 }
+
+void	free_tokens(t_token *tokens)
+{
+	t_token	*tmp;
+
+	while (tokens)
+	{
+		tmp = tokens;
+		tokens = tokens->next;
+		free(tmp->value);
+		free(tmp);
+	}
+}

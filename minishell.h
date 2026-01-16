@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/16 13:53:43 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:56:16 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,39 @@
 
 extern volatile sig_atomic_t	g_signal;
 
+typedef enum e_token_type
+{
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	HEREDOC
+}								t_token_type;
+
+typedef enum e_quotes
+{
+	NOT_IN_QUOTES,
+	IN_SINGLE_QUOTES,
+	IN_DOUBLE_QUOTES
+}								t_quotes;
+
+typedef struct s_token
+{
+	char						*value;
+	t_token_type				type;
+	struct s_token				*next;
+}								t_token;
+
 typedef struct s_checker
 {
 }								t_checker;
 
 typedef struct s_saved_fd
 {
-	int stdin_backup;
-	int stdout_backup;
-}t_saved_fd;
+	int							stdin_backup;
+	int							stdout_backup;
+}								t_saved_fd;
 
 typedef enum e_redirect_type
 {
@@ -83,5 +107,16 @@ char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
 char							**expand_args(char **args, t_minishell *shell);
+
+/* Parsing */
+t_token							*tokenize(char *str);
+t_command						*parse_tokens(t_token *t);
+t_token							*add_new_tok(char *value, t_token_type type);
+void							token_add_back(t_token **lst, t_token *new);
+void							free_tokens(t_token *tokens);
+
+/* Redirections */
+int								mis_redirections(t_redir *redir);
+void							process_heredocs(t_command *cmds);
 
 #endif

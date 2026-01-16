@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 15:58:33 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/14 15:58:36 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:19:05 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,41 @@ void	execute_command(t_command *cmd, t_minishell *shell)
 
 void	handle_input(char *input, t_minishell *shell)
 {
-	char		**args;
-	t_command	cmd;
-	char		**exp_args;
+	t_token		*tokens;
+	t_command	*cmds;
+	t_command	*curr;
+	char		**expanded_args;
+	char		**original_args;
 
 	if (*input)
 	{
 		add_history(input);
-		args = ft_split(input, ' ');
-		if (args && args[0])
+		tokens = tokenize(input);
+		if (!tokens)
+			return ;
+		cmds = parse_tokens(tokens);
+		free_tokens(tokens);
+		if (cmds)
 		{
-			exp_args = expand_args(args, shell);
-			if (exp_args && exp_args[0])
+			process_heredocs(cmds);
+			curr = cmds;
+			while (curr)
 			{
-				cmd.args = exp_args;
-				cmd.next = NULL;
-				execute_command(&cmd, shell);
-				ft_free_array(exp_args);
-				ft_free_array(args);
+				expanded_args = expand_args(curr->args, shell);
+				if (expanded_args && expanded_args[0])
+				{
+					original_args = curr->args;
+					curr->args = expanded_args;
+					execute_command(curr, shell);
+					curr->args = original_args;
+					ft_free_array(expanded_args);
+				}
+				else if (expanded_args)
+					ft_free_array(expanded_args);
+				curr = curr->next;
 			}
-			else if (exp_args)
-				free(exp_args);
+			free_cmds(cmds);
 		}
-		else if (args)
-			free(args);
 	}
 }
 
