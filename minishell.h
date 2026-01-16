@@ -103,6 +103,7 @@ void							signal_handler(int sig);
 int								check_signal_event(void);
 int								ft_arraylen(char **array);
 void							ft_free_array(char **array);
+void							free_cmds(t_command *cmds);
 char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
