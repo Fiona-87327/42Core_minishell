@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/09 16:54:44 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:12:42 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	mis_exec(t_command *cmd, t_minishell *shell)
 {
 	char	*path;
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid == -1)
@@ -89,5 +90,7 @@ void	mis_exec(t_command *cmd, t_minishell *shell)
 		perror("execve");
 		exit(1);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		shell->exit_status = WEXITSTATUS(status);
 }

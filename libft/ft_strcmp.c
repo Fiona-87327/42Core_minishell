@@ -1,41 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:55:48 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/16 17:14:48 by mhnatovs         ###   ########.fr       */
+/*   Created: 2026/01/16 16:59:58 by mhnatovs          #+#    #+#             */
+/*   Updated: 2026/01/16 17:00:04 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_token	*add_new_tok(char *value, t_token_type type)
+int	ft_strcmp(char *s1, char *s2)
 {
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = value;
-	token->type = type;
-	token->next = NULL;
-	return (token);
-}
-
-void	token_add_back(t_token **lst, t_token *new)
-{
-	t_token	*tmp;
-
-	if (!*lst)
+	while (*s1 && (*s1 == *s2))
 	{
-		*lst = new;
-		return ;
+		s1++;
+		s2++;
 	}
-	tmp = *lst;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }

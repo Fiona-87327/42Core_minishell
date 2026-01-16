@@ -1,41 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   mis_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 15:55:48 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/16 17:14:48 by mhnatovs         ###   ########.fr       */
+/*   Created: 2026/01/10 14:39:25 by jiyawang          #+#    #+#             */
+/*   Updated: 2026/01/16 17:19:08 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*add_new_tok(char *value, t_token_type type)
+void	mis_signal_handler(int sig)
 {
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = value;
-	token->type = type;
-	token->next = NULL;
-	return (token);
+	g_signal = sig;
 }
 
-void	token_add_back(t_token **lst, t_token *new)
+int	mis_check_signal_event(void)
 {
-	t_token	*tmp;
-
-	if (!*lst)
+	if (g_signal == SIGINT)
 	{
-		*lst = new;
-		return ;
+		g_signal = 0;
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	tmp = *lst;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	return (0);
 }

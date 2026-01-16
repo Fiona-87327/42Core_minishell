@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/15 10:36:37 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/15 10:36:38 by mhnatovs         ###   ########.fr       */
+/*   Created: 2026/01/14 17:44:22 by mhnatovs          #+#    #+#             */
+/*   Updated: 2026/01/16 17:03:42 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ int	add_arg_to_cmd(t_command *cmd, char *word)
 		return (1);
 	i = 0;
 	while (cmd->args[i])
-		new_args[i] = cmd->args[i++];
+	{
+		new_args[i] = cmd->args[i];
+		i++;
+	}
 	new_args[i] = ft_strdup(word);
 	new_args[i + 1] = NULL;
 	free(cmd->args);
@@ -72,11 +75,12 @@ int	add_arg_to_cmd(t_command *cmd, char *word)
 	return (0);
 }
 
-t_command	*parse_tokens(t_token *t)
+t_command	*parse_tokens(t_token *t, t_minishell *sh)
 {
 	t_command	*cmds;
 	t_command	*current;
-
+	// char		*exp_cmd;
+	(void)sh;
 	cmds = NULL;
 	current = NULL;
 	while (t)
@@ -87,7 +91,12 @@ t_command	*parse_tokens(t_token *t)
 			command_add_back(&cmds, current);
 		}
 		if (t->type == WORD)
-			add_arg(current, t->value);
+		{
+			// exp_cmd = expand_word(t->value, sh);
+			// add_arg_to_cmd(current, exp_cmd);
+			 add_arg_to_cmd(current, t->value); 
+			// free(exp_cmd);
+		}
 		else if (t->type == PIPE)
 		{
 			current->pipe_out = 1;
@@ -106,5 +115,27 @@ t_command	*parse_tokens(t_token *t)
 		}
 		t = t->next;
 	}
+	/*// DEBUG:
+    printf("\n=== AFTER PARSING ===\n");
+    t_command *debug_cmd = cmds;
+    int cmd_idx = 0;
+    while (debug_cmd)
+    {
+        printf("Command %d:\n", cmd_idx);
+        int i = 0;
+        while (debug_cmd->args && debug_cmd->args[i])
+        {
+            printf("  args[%d] = [%s]\n", i, debug_cmd->args[i]);
+            i++;
+        }
+        if (debug_cmd->redir_in)
+            printf("  redir_in = [%s]\n", debug_cmd->redir_in);
+        if (debug_cmd->redir_out)
+            printf("  redir_out = [%s]\n", debug_cmd->redir_out);
+        printf("  pipe_out = %d\n", debug_cmd->pipe_out);
+        debug_cmd = debug_cmd->next;
+        cmd_idx++;
+    }
+    printf("=====================\n\n");*/
 	return (cmds);
 }
