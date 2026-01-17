@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 16:30:22 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:01:28 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void							mis_env(t_command *cmd, t_minishell *shell);
 void							mis_export(t_command *cmd, t_minishell *shell);
 void							mis_unset(t_command *cmd, t_minishell *shell);
 void							mis_exec(t_command *cmd, t_minishell *shell);
-void							mis_exec_cmd(t_command *cmd, t_minishell *shell);
+void							mis_exec_cmd(t_command *cmd,
+									t_minishell *shell);
 void							mis_pipes(t_command *cmd, t_minishell *shell);
 void							signal_handler(int sig);
 int								check_signal_event(void);
@@ -110,6 +111,8 @@ char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
 char							**expand_args(char **args, t_minishell *shell);
+void							execute_child_command(t_command *cmd,
+									t_minishell *shell);
 
 /* Parsing */
 t_token							*tokenize(char *str);
@@ -122,5 +125,7 @@ void							free_tokens(t_token *tokens);
 int								mis_redirections(t_redir *redir);
 void							process_heredocs(t_command *cmds);
 void							execute_with_pipes(t_command *cmds);
+t_saved_fd						save_fds(void);
+void							restore_fds(t_saved_fd saved);
 
 #endif
