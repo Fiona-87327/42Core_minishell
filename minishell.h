@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 20:56:23 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:01:08 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void							free_cmds(t_command *cmds);
 char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
+char							**expand_args(char **args, t_minishell *shell);
 
 /* Parsing */
 t_token							*tokenize(char *str);
@@ -132,7 +133,7 @@ int								is_quote(char c);
 /* Redirections */
 int								mis_redirections(t_redir *redir);
 void							process_heredocs(t_command *cmds);
-void							execute_with_pipes(t_command *cmds); // Add a newline or keep it clean
+void							execute_with_pipes(t_command *cmds);
 void							execute_child_command(t_command *cmd,
 									t_minishell *shell);
 

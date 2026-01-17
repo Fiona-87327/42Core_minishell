@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 16:09:32 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 20:55:42 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:01:31 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ static void	setup_pipe_fds(int **pipes, int cmd_index, int num_commands)
 	}
 	close_pipes(pipes, num_commands - 1);
 }
-
-
 
 void	mis_pipes(t_command *cmd, t_minishell *shell)
 {

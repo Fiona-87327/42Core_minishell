@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_redirections.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 15:29:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 18:28:47 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:01:31 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static int	redirect_heredoc(t_redir *redir)
 	close(redir->heredoc_fd);
 	return (0);
 }
+
 int	mis_redirections(t_redir *redir)
 {
 	t_redir	*current;
