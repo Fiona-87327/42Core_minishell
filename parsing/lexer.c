@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 11:17:34 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/16 17:03:32 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/17 15:10:28 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*read_word(char *str, int *i)
 			break ;
 		(*i)++;
 	}
-	if (quote != NOT_IN_QUOTES)////needs to finish with errors handling
+	if (quote != NOT_IN_QUOTES)
 		return (NULL);
 	return (ft_substr(str, start, *i - start));
 }

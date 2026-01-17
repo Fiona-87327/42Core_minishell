@@ -36,3 +36,22 @@ char	*delete_quotes(char *str)
 	clean_str[j] = '\0';
 	return (clean_str);
 }
+
+int	check_quotes_balance(char *str)
+{
+	int		i;
+	char	quote;
+
+	i = 0;
+	quote = 0;
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '"') && quote == 0)
+			quote = str[i];
+		else if (str[i] == quote)
+			quote = 0;
+		i++;
+	}
+	return (quote != 0);
+}
+

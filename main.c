@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/16 18:48:21 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/17 15:44:13 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,22 @@ void	execute_command(t_command *cmd, t_minishell *shell)
 			cur = cur->next;
 			continue ;
 		}
-		if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
-			mis_pwd(cmd, shell);
-		else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
-			mis_echo(cmd, shell);
-		else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
-			mis_cd(cmd, shell);
-		else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
-			mis_env(cmd, shell);
-		else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
-			mis_exit(cmd, shell);
-		else if (ft_strncmp(cmd->args[0], "export", 7) == 0)
-			mis_export(cmd, shell);
-		else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
-			mis_unset(cmd, shell);
+		if (ft_strncmp(cur->args[0], "pwd", 4) == 0)
+			mis_pwd(cur, shell);
+		else if (ft_strncmp(cur->args[0], "echo", 5) == 0)
+			mis_echo(cur, shell);
+		else if (ft_strncmp(cur->args[0], "cd", 3) == 0)
+			mis_cd(cur, shell);
+		else if (ft_strncmp(cur->args[0], "env", 4) == 0)
+			mis_env(cur, shell);
+		else if (ft_strncmp(cur->args[0], "exit", 5) == 0)
+			mis_exit(cur, shell);
+		else if (ft_strncmp(cur->args[0], "export", 7) == 0)
+			mis_export(cur, shell);
+		else if (ft_strncmp(cur->args[0], "unset", 6) == 0)
+			mis_unset(cur, shell);
 		else
-			mis_exec(cmd, shell);
+			mis_exec(cur, shell);
 		cur = cur->next;
 	}
 }
@@ -50,35 +50,30 @@ void	handle_input(char *input, t_minishell *shell)
 {
 	t_token		*tokens;
 	t_command	*cmds;
-	
 
 	if (!*input)
 		return ;
 	add_history(input);
+	if (check_quotes_balance(input))
+	{
+		syntax_error("unclosed quotes");
+		return ;
+	}
 	tokens = tokenize(input);
 	if (!tokens || check_syntax(tokens))
 	{
 		shell->exit_status = 2;
-		free(tokens);//free_tokens?
+		free_tokens(tokens);
 		return ;
 	}
-	cmds = parse_tokens(tokens, shell);
-	expand_cmds(cmds, shell);
-	execute_command(cmds, shell);
+	cmds = parse_tokens(tokens);
 	free_tokens(tokens);
-	// free_commands(cmds);
-}
-
-void	free_tokens(t_token *t)
-{
-	t_token	*tmp;
-
-	while (t)
+	if (cmds)
 	{
-		tmp = t->next;
-		free(t->value);
-		free(t);
-		t = tmp;
+		process_heredocs(cmds);
+		expand_cmds(cmds, shell);
+		execute_command(cmds, shell);
+		free_cmds(cmds);
 	}
 }
 
@@ -112,7 +107,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	signal(SIGINT, mis_signal_handler);
 	signal(SIGQUIT, SIG_IGN);
-	// signal(SIGTSTP, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 	rl_event_hook = mis_check_signal_event;
 	shell.env = dup_env(envp);
 	shell.exit_status = 0;

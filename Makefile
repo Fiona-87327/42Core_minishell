@@ -18,12 +18,14 @@ SRCS = executor/built_in/mis_cd.c \
 	   executor/built_in/mis_exec.c \
 	   executor/utils/00_utils.c \
 	   executor/utils/01_utils.c \
+	   executor/mis_redirections.c \
 	   parsing/expansion.c \
 	   parsing/lexer_utils.c \
 	   parsing/lexer.c \
 	   parsing/syntax_checker.c \
 	   parsing/parser.c \
 	   parsing/quotes.c \
+	   parsing/mis_heredoc.c \
 	   signal/mis_signal.c \
 	   main.c
 OBJS = $(SRCS:.c=.o)

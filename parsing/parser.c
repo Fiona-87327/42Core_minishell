@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:44:22 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/16 17:03:42 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/17 15:11:00 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_command	*new_command(void)
 	cmd->redir_in = NULL;
 	cmd->redir_out = NULL;
 	cmd->next = NULL;
+	cmd->redirs = NULL;
 	return (cmd);
 }
 
@@ -75,14 +76,46 @@ int	add_arg_to_cmd(t_command *cmd, char *word)
 	return (0);
 }
 
-t_command	*parse_tokens(t_token *t, t_minishell *sh)
+int	add_redir(t_command *cmd, t_token_type type, char *filename)
+{
+	t_redir	*new;
+	t_redir	*last;
+
+	new = malloc(sizeof(t_redir));
+	if (!new)
+		return (1);
+	if (type == REDIR_IN)
+		new->type = REDIRECT_INPUT;
+	else if (type == REDIR_OUT)
+		new->type = REDIRECT_OUTPUT;
+	else if (type == REDIR_APPEND)
+		new->type = REDIRECT_APPEND;
+	else if (type == HEREDOC)
+		new->type = REDIRECT_HEREDOC;
+	else
+		new->type = REDIRECT_INPUT;
+	new->filename = ft_strdup(filename);
+	new->heredoc_fd = -1;
+	new->next = NULL;
+	if (!cmd->redirs)
+		cmd->redirs = new;
+	else
+	{
+		last = cmd->redirs;
+		while (last->next)
+			last = last->next;
+		last->next = new;
+	}
+	return (0);
+}
+
+t_command	*parse_tokens(t_token *t)
 {
 	t_command	*cmds;
 	t_command	*current;
-	// char		*exp_cmd;
-	(void)sh;
 	cmds = NULL;
 	current = NULL;
+
 	while (t)
 	{
 		if (!current)
@@ -91,27 +124,20 @@ t_command	*parse_tokens(t_token *t, t_minishell *sh)
 			command_add_back(&cmds, current);
 		}
 		if (t->type == WORD)
-		{
-			// exp_cmd = expand_word(t->value, sh);
-			// add_arg_to_cmd(current, exp_cmd);
 			 add_arg_to_cmd(current, t->value); 
-			// free(exp_cmd);
-		}
 		else if (t->type == PIPE)
 		{
 			current->pipe_out = 1;
 			current = NULL;
 		}
-		else if (t->type == REDIR_OUT || t->type == REDIR_APPEND)
+		else if (t->type == REDIR_OUT || t->type == REDIR_APPEND 
+			|| t->type == REDIR_IN || t->type == HEREDOC)
 		{
-			current->redir_out = ft_strdup(t->next->value);
-			current->append = (t->type == REDIR_APPEND);
-			t = t->next;
-		}
-		else if (t->type == REDIR_IN)
-		{
-			current->redir_in = ft_strdup(t->next->value);
-			t = t->next;
+			if (t->next && t->next->type == WORD)
+			{
+				add_redir(current, t->type, t->next->value);
+				t = t->next;
+			}
 		}
 		t = t->next;
 	}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   00_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:15:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/07 14:44:06 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 13:16:25 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,23 @@ void	ft_free_array(char **array)
 	free(array);
 }
 
-void	signal_handler(int sig)
+void	free_cmds(t_command *cmds)
 {
-	g_signal = sig;
-}
+	t_command	*tmp;
+	t_redir		*r_tmp;
 
-int	check_signal_event(void)
-{
-	if (g_signal == SIGINT)
+	while (cmds)
 	{
-		g_signal = 0;
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		tmp = cmds;
+		cmds = cmds->next;
+		ft_free_array(tmp->args);
+		while (tmp->redirs)
+		{
+			r_tmp = tmp->redirs;
+			tmp->redirs = tmp->redirs->next;
+			free(r_tmp->filename);
+			free(r_tmp);
+		}
+		free(tmp);
 	}
-	return (0);
 }

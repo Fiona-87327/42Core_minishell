@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/16 17:12:42 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/17 13:49:52 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	mis_exec(t_command *cmd, t_minishell *shell)
 		return ;
 	if (pid == 0)
 	{
+		if (mis_redirections(cmd->redirs) == -1)
+			exit(1);
 		if (ft_strchr(cmd->args[0], '/'))
 			path = cmd->args[0];
 		else
