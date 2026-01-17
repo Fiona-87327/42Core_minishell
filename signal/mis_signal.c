@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   mis_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 14:39:25 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/10 14:45:33 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:26:14 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	signal_handler(int sig)
+void	mis_signal_handler(int sig)
 {
 	g_signal = sig;
 }
 
-int	check_signal_event(void)
+int	mis_check_signal_event(void)
 {
 	if (g_signal == SIGINT)
 	{

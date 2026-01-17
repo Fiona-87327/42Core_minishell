@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mis_redir_helper.c                                 :+:      :+:    :+:   */
+/*   ft_strjoin_char.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/16 16:55:55 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 18:28:04 by mhnatovs         ###   ########.fr       */
+/*   Created: 2026/01/16 17:00:49 by mhnatovs          #+#    #+#             */
+/*   Updated: 2026/01/16 17:01:07 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "libft.h"
 
-t_saved_fd	save_fds(void)
+char	*ft_strjoin_char(char *str, char c)
 {
-	t_saved_fd	saved;
+	int		len;
+	char	*res;
 
-	saved.stdin_backup = dup(STDIN_FILENO);
-	saved.stdout_backup = dup(STDOUT_FILENO);
-	return (saved);
-}
-
-void	restore_fds(t_saved_fd saved)
-{
-	dup2(saved.stdin_backup, STDIN_FILENO);
-	dup2(saved.stdout_backup, STDOUT_FILENO);
-	close(saved.stdin_backup);
-	close(saved.stdout_backup);
+	len = ft_strlen(str);
+	res = malloc(len + 2);
+	if (!res)
+		return (NULL);
+	ft_memcpy(res, str, len);
+	res[len] = c;
+	res[len + 1] = '\0';
+	return (res);
 }

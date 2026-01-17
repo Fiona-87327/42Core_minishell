@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 16:30:22 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:25:35 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,14 @@ typedef struct s_redir
 	char						*filename;
 	struct s_redir				*next;
 }								t_redir;
-
 typedef struct s_command
 {
 	char						**args;
 	struct s_command			*next;
+	char						*redir_in;
+	char						*redir_out;
+	int							append;
+	int							pipe_out;
 	t_redir						*redirs;
 }								t_command;
 
@@ -101,15 +104,14 @@ void							mis_unset(t_command *cmd, t_minishell *shell);
 void							mis_exec(t_command *cmd, t_minishell *shell);
 void							mis_exec_cmd(t_command *cmd, t_minishell *shell);
 void							mis_pipes(t_command *cmd, t_minishell *shell);
-void							signal_handler(int sig);
-int								check_signal_event(void);
+void							mis_signal_handler(int sig);
+int								mis_check_signal_event(void);
 int								ft_arraylen(char **array);
 void							ft_free_array(char **array);
 void							free_cmds(t_command *cmds);
 char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
-char							**expand_args(char **args, t_minishell *shell);
 
 /* Parsing */
 t_token							*tokenize(char *str);
@@ -117,6 +119,17 @@ t_command						*parse_tokens(t_token *t);
 t_token							*add_new_tok(char *value, t_token_type type);
 void							token_add_back(t_token **lst, t_token *new);
 void							free_tokens(t_token *tokens);
+int								syntax_error(char *str);
+int								check_syntax(t_token *t);
+void							expand_cmds(t_command	*cmds, t_minishell *sh);
+char							*get_name_for_var(char *word, int *i);
+char							*expand_word(char *word, t_minishell *shell);
+void							handle_angle_brackets(char *str, t_token **tokens, int *i);
+void							command_add_back(t_command **lst, t_command *new);
+t_command						*new_command(void);
+int								add_arg_to_cmd(t_command *cmd, char *word);
+char							*delete_quotes(char *str);
+int								check_quotes_balance(char *str);
 
 /* Redirections */
 int								mis_redirections(t_redir *redir);

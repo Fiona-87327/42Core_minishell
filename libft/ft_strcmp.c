@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mis_redir_helper.c                                 :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/16 16:55:55 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 18:28:04 by mhnatovs         ###   ########.fr       */
+/*   Created: 2026/01/16 16:59:58 by mhnatovs          #+#    #+#             */
+/*   Updated: 2026/01/16 17:00:04 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "libft.h"
 
-t_saved_fd	save_fds(void)
+int	ft_strcmp(char *s1, char *s2)
 {
-	t_saved_fd	saved;
-
-	saved.stdin_backup = dup(STDIN_FILENO);
-	saved.stdout_backup = dup(STDOUT_FILENO);
-	return (saved);
-}
-
-void	restore_fds(t_saved_fd saved)
-{
-	dup2(saved.stdin_backup, STDIN_FILENO);
-	dup2(saved.stdout_backup, STDOUT_FILENO);
-	close(saved.stdin_backup);
-	close(saved.stdout_backup);
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }

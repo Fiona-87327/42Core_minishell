@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/15 10:36:01 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/15 10:36:04 by mhnatovs         ###   ########.fr       */
+/*   Created: 2026/01/13 11:17:34 by mhnatovs          #+#    #+#             */
+/*   Updated: 2026/01/17 15:10:28 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*read_word(char *str, int *i)
 			break ;
 		(*i)++;
 	}
-	if (quote != NOT_IN_QUOTES)////needs to finish with errors handling
+	if (quote != NOT_IN_QUOTES)
 		return (NULL);
 	return (ft_substr(str, start, *i - start));
 }
@@ -91,6 +91,18 @@ t_token	*tokenize(char *str)//not forget to delete '' ""
 		else
 			token_add_back(&tokens, add_new_tok(read_word(str, &i), WORD));
 	}
+	/*// DEBUG:
+	    printf("\n=== TOKENS ===\n");
+    t_token *debug = tokens;
+    int idx = 0;
+    while (debug)
+    {
+        printf("[%d] type=%d value=[%s]\n", idx, debug->type, debug->value);
+        debug = debug->next;
+        idx++;
+    }
+    printf("==============\n\n");
+	*/
 	return (tokens);
 }
 

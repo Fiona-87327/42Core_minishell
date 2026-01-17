@@ -23,7 +23,9 @@ SRCS = executor/built_in/mis_cd.c \
 	   parsing/expansion.c \
 	   parsing/lexer.c \
 	   parsing/lexer_utils.c \
+	   parsing/syntax_checker.c \
 	   parsing/parser.c \
+	   parsing/quotes.c \
 	   parsing/mis_heredoc.c \
 	   signal/mis_signal.c \
 	   main.c
