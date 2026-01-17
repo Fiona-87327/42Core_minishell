@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:01:07 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/16 19:05:25 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:38:20 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ static char	*get_env_from_shell(char *name, t_minishell *shell)
 	return (ft_strdup(""));
 }
 
-char *get_name_for_var(char *word, int *i)
+char	*get_name_for_var(char *word, int *i)
 {
-	int start;
-	int len;
-	char *var_name;
+	int		start;
+	int		len;
+	char	*var_name;
 
 	start = *i;
 	len = 0;
@@ -53,14 +53,16 @@ char *get_name_for_var(char *word, int *i)
 	return (var_name);
 }
 
-char *expand_word(char *word, t_minishell *shell)
+char	*expand_word(char *word, t_minishell *shell)
 {
-	int i = 0;
+	int	i;
+
 	t_quotes quote = NOT_IN_QUOTES;
 	char *res = ft_strdup("");
 	char *temp;
 	char *var_name;
 	char *value;
+	i = 0;
 
 	while (word[i])
 	{
@@ -129,11 +131,11 @@ char *expand_word(char *word, t_minishell *shell)
 	return (res);
 }
 
-void expand_cmds(t_command *cmds, t_minishell *sh)
+void	expand_cmds(t_command *cmds, t_minishell *sh)
 {
-	t_command *cmd;
-	int i;
-	char *tmp;
+	t_command	*cmd;
+	int			i;
+	char		*tmp;
 
 	cmd = cmds;
 	while (cmd)
