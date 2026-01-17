@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/16 16:56:16 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:30:22 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void							mis_env(t_command *cmd, t_minishell *shell);
 void							mis_export(t_command *cmd, t_minishell *shell);
 void							mis_unset(t_command *cmd, t_minishell *shell);
 void							mis_exec(t_command *cmd, t_minishell *shell);
+void							mis_exec_cmd(t_command *cmd, t_minishell *shell);
+void							mis_pipes(t_command *cmd, t_minishell *shell);
 void							signal_handler(int sig);
 int								check_signal_event(void);
 int								ft_arraylen(char **array);
@@ -119,5 +121,6 @@ void							free_tokens(t_token *tokens);
 /* Redirections */
 int								mis_redirections(t_redir *redir);
 void							process_heredocs(t_command *cmds);
+void							execute_with_pipes(t_command *cmds);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 15:58:33 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/16 17:19:05 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:35:20 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	handle_input(char *input, t_minishell *shell)
 	t_command	*cmds;
 	t_command	*curr;
 	char		**expanded_args;
-	char		**original_args;
 
 	if (*input)
 	{
@@ -57,18 +56,17 @@ void	handle_input(char *input, t_minishell *shell)
 			while (curr)
 			{
 				expanded_args = expand_args(curr->args, shell);
-				if (expanded_args && expanded_args[0])
+				if (expanded_args)
 				{
-					original_args = curr->args;
+					ft_free_array(curr->args);
 					curr->args = expanded_args;
-					execute_command(curr, shell);
-					curr->args = original_args;
-					ft_free_array(expanded_args);
 				}
-				else if (expanded_args)
-					ft_free_array(expanded_args);
 				curr = curr->next;
 			}
+			if (cmds->next)
+				mis_pipes(cmds, shell);
+			else if (cmds->args && cmds->args[0])
+				execute_command(cmds, shell);
 			free_cmds(cmds);
 		}
 	}

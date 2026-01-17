@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/09 16:54:44 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:30:17 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,31 @@ static void	handle_exec_error(char *cmd)
 	exit(127);
 }
 
-void	mis_exec(t_command *cmd, t_minishell *shell)
+void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
 	char	*path;
+
+	if (mis_redirections(cmd->redirs) == -1)
+		exit(1);
+	if (ft_strchr(cmd->args[0], '/'))
+		path = cmd->args[0];
+	else
+		path = get_path(cmd->args[0], shell->env);
+	if (!path || access(path, F_OK) != 0)
+		handle_exec_error(cmd->args[0]);
+	execve(path, cmd->args, shell->env);
+	perror("execve");
+	exit(1);
+}
+
+void	mis_exec(t_command *cmd, t_minishell *shell)
+{
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
 		return ;
 	if (pid == 0)
-	{
-		if (mis_redirections(cmd->redirs) == -1)
-			exit(1);
-		if (ft_strchr(cmd->args[0], '/'))
-			path = cmd->args[0];
-		else
-			path = get_path(cmd->args[0], shell->env);
-		if (!path || access(path, F_OK) != 0)
-			handle_exec_error(cmd->args[0]);
-		execve(path, cmd->args, shell->env);
-		perror("execve");
-		exit(1);
-	}
+		mis_exec_cmd(cmd, shell);
 	waitpid(pid, NULL, 0);
 }
