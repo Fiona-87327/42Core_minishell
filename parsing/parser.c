@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:44:22 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/17 20:53:32 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/18 13:48:33 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,31 @@ t_command	*new_command(void)
 	return (cmd);
 }
 
+int	add_arg_to_new_arr(t_command *cmd, char *word)
+{
+	char	**args;
+
+	args = malloc(sizeof(char *) * 2);
+	if (!args)
+		return (1);
+	args[0] = ft_strdup(word);
+	if (!args[0])
+	{
+		free(args);
+		return (1);
+	}
+	args[1] = NULL;
+	cmd->args = args;
+	return (0);
+}
+
 int	add_arg_to_cmd(t_command *cmd, char *word)
 {
 	char	**new_args;
 	int		i;
 
 	if (cmd->args == NULL)
-	{
-		new_args = malloc(sizeof(char *) * 2);
-		if (!new_args)
-			return (1);
-		new_args[0] = ft_strdup(word);
-		new_args[1] = NULL;
-		cmd->args = new_args;
-		return (0);
-	}
+		return (add_arg_to_new_arr(cmd, word));
 	i = ft_arraylen(cmd->args);
 	new_args = malloc(sizeof(char *) * (i + 2));
 	if (!new_args)
@@ -106,9 +116,9 @@ t_command	*parse_tokens(t_token *t)
 {
 	t_command	*cmds;
 	t_command	*current;
+
 	cmds = NULL;
 	current = NULL;
-
 	while (t)
 	{
 		if (!current)
@@ -117,12 +127,12 @@ t_command	*parse_tokens(t_token *t)
 			command_add_back(&cmds, current);
 		}
 		if (t->type == WORD)
-			 add_arg_to_cmd(current, t->value); 
+			add_arg_to_cmd(current, t->value);
 		else if (t->type == PIPE)
 		{
 			current = NULL;
 		}
-		else if (t->type == REDIR_OUT || t->type == REDIR_APPEND 
+		else if (t->type == REDIR_OUT || t->type == REDIR_APPEND
 			|| t->type == REDIR_IN || t->type == HEREDOC)
 		{
 			if (t->next && t->next->type == WORD)
@@ -133,27 +143,5 @@ t_command	*parse_tokens(t_token *t)
 		}
 		t = t->next;
 	}
-	/*// DEBUG:
-    printf("\n=== AFTER PARSING ===\n");
-    t_command *debug_cmd = cmds;
-    int cmd_idx = 0;
-    while (debug_cmd)
-    {
-        printf("Command %d:\n", cmd_idx);
-        int i = 0;
-        while (debug_cmd->args && debug_cmd->args[i])
-        {
-            printf("  args[%d] = [%s]\n", i, debug_cmd->args[i]);
-            i++;
-        }
-        if (debug_cmd->redir_in)
-            printf("  redir_in = [%s]\n", debug_cmd->redir_in);
-        if (debug_cmd->redir_out)
-            printf("  redir_out = [%s]\n", debug_cmd->redir_out);
-        printf("  pipe_out = %d\n", debug_cmd->pipe_out);
-        debug_cmd = debug_cmd->next;
-        cmd_idx++;
-    }
-    printf("=====================\n\n");*/
 	return (cmds);
 }
