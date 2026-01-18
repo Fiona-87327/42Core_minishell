@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:44:22 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/18 13:48:33 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/18 17:06:28 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,7 @@ void	command_add_back(t_command **lst, t_command *new)
 	tmp->next = new;
 }
 
-t_command	*new_command(void)
-{
-	t_command	*cmd;
-
-	cmd = ft_calloc(1, sizeof(t_command));
-	if (!cmd)
-		return (NULL);
-	return (cmd);
-}
-
-int	add_arg_to_new_arr(t_command *cmd, char *word)
+static int	add_arg_to_new_arr(t_command *cmd, char *word)
 {
 	char	**args;
 
@@ -73,41 +63,38 @@ int	add_arg_to_cmd(t_command *cmd, char *word)
 		i++;
 	}
 	new_args[i] = ft_strdup(word);
+	if (!new_args[i])
+	{
+		free(new_args);
+		return (1);
+	}
 	new_args[i + 1] = NULL;
 	free(cmd->args);
 	cmd->args = new_args;
 	return (0);
 }
 
-int	add_redir(t_command *cmd, t_token_type type, char *filename)
+static int	handle_token(t_token **t, t_command **current, t_command **cmds)
 {
-	t_redir	*new;
-	t_redir	*last;
-
-	new = malloc(sizeof(t_redir));
-	if (!new)
-		return (1);
-	if (type == REDIR_IN)
-		new->type = REDIRECT_INPUT;
-	else if (type == REDIR_OUT)
-		new->type = REDIRECT_OUTPUT;
-	else if (type == REDIR_APPEND)
-		new->type = REDIRECT_APPEND;
-	else if (type == HEREDOC)
-		new->type = REDIRECT_HEREDOC;
-	else
-		new->type = REDIRECT_INPUT;
-	new->filename = ft_strdup(filename);
-	new->heredoc_fd = -1;
-	new->next = NULL;
-	if (!cmd->redirs)
-		cmd->redirs = new;
-	else
+	if (!*current)
 	{
-		last = cmd->redirs;
-		while (last->next)
-			last = last->next;
-		last->next = new;
+		*current = new_command();
+		command_add_back(cmds, *current);
+	}
+	if ((*t)->type == WORD)
+	{
+		if (add_arg_to_cmd(*current, (*t)->value))
+			return (1);
+	}
+	else if ((*t)->type == PIPE)
+	{
+		*current = NULL;
+	}
+	else if (is_redir((*t)->type))
+	{
+		if (handle_redir(*current, *t))
+			return (1);
+		*t = (*t)->next;
 	}
 	return (0);
 }
@@ -121,26 +108,8 @@ t_command	*parse_tokens(t_token *t)
 	current = NULL;
 	while (t)
 	{
-		if (!current)
-		{
-			current = new_command();
-			command_add_back(&cmds, current);
-		}
-		if (t->type == WORD)
-			add_arg_to_cmd(current, t->value);
-		else if (t->type == PIPE)
-		{
-			current = NULL;
-		}
-		else if (t->type == REDIR_OUT || t->type == REDIR_APPEND
-			|| t->type == REDIR_IN || t->type == HEREDOC)
-		{
-			if (t->next && t->next->type == WORD)
-			{
-				add_redir(current, t->type, t->next->value);
-				t = t->next;
-			}
-		}
+		if (handle_token(&t, &current, &cmds))
+			return (NULL);
 		t = t->next;
 	}
 	return (cmds);

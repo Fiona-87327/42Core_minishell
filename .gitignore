@@ -11,3 +11,5 @@ out
 # libft/
 .DS_Store
 *.log
+minishell_tester
+test.txt

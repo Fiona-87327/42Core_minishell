@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 10:47:15 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/18 08:40:09 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/18 17:04:09 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,12 @@ int								add_arg_to_cmd(t_command *cmd, char *word);
 char							*delete_quotes(char *str);
 int								check_quotes_balance(char *str);
 int								is_quote(char c);
+int								is_redir(t_token_type type);
+t_command						*new_command(void);
+t_redir							*add_redir_define_type(t_token_type type);
+int								add_redir(t_command *cmd, t_token_type type,
+									char *filename);
+int								handle_redir(t_command *cmd, t_token *token);
 
 /* Redirections */
 int								mis_redirections(t_redir *redir);
