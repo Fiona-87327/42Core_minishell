@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:27:04 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/19 15:46:55 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:33:35 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,20 @@ int								add_arg_to_cmd(t_command *cmd, char *word);
 char							*delete_quotes(char *str);
 int								check_quotes_balance(char *str);
 int								is_quote(char c);
+char							*append_char(char *res, char c);
+char							*append_str(char *res, char *str);
+int								handle_quotes(char c, t_quotes *quote);
+char							*dollar_expan(char *word, t_minishell *sh,
+									int *i, char *res);
+char							*get_shell_status(t_minishell *sh,
+									int *i, char *res);
+t_command						*new_command(void);
+int								is_redir(t_token_type type);
+t_redir							*add_redir_define_type(t_token_type type);
+int								add_redir(t_command *cmd, t_token_type type,
+									char *filename);
+int								handle_redir(t_command *cmd, t_token *token);
+char							*get_env_from_shell(char *name,
+									t_minishell *shell);
 
 #endif
