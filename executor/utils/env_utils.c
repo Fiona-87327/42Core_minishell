@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   01_utils.c                                         :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/07 15:36:10 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/09 15:04:34 by jiyawang         ###   ########.fr       */
+/*   Created: 2026/01/19 17:50:39 by jiyawang          #+#    #+#             */
+/*   Updated: 2026/01/19 17:50:43 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,18 @@ static char	**append_env_row(char **old_env, char *va_arg)
 	return (new_env);
 }
 
+char	*get_var_name(char *arg)
+{
+	int		i;
+	char	*name;
+
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+		i++;
+	name = ft_substr(arg, 0, i);
+	return (name);
+}
+
 void	add_to_env(t_minishell *shell, char *arg)
 {
 	char	*name;
@@ -71,20 +83,4 @@ void	add_to_env(t_minishell *shell, char *arg)
 		shell->env = append_env_row(shell->env, arg);
 	}
 	free(name);
-}
-
-char	*get_env_value(char **env, char *key)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = ft_strlen(key);
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], key, len) == 0 && env[i][len] == '=')
-			return (env[i] + len + 1);
-		i++;
-	}
-	return (NULL);
 }

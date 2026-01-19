@@ -9,6 +9,7 @@ LDFLAGS = -lreadline
 MAKEFLAGS += --no-print-directory
 
 SRCS = executor/built_in/mis_cd.c \
+	   executor/built_in/mis_cd_util.c \
 	   executor/built_in/mis_echo.c \
 	   executor/built_in/mis_env.c \
 	   executor/built_in/mis_exit.c \
@@ -17,7 +18,7 @@ SRCS = executor/built_in/mis_cd.c \
 	   executor/built_in/mis_unset.c \
 	   executor/built_in/mis_exec.c \
 	   executor/utils/00_utils.c \
-	   executor/utils/01_utils.c \
+	   executor/utils/env_utils.c \
 	   executor/mis_redirections.c \
 	   executor/mis_pipes_helper.c \
 	   executor/mis_execute_cmd.c \

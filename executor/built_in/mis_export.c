@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:53:02 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/09 17:01:19 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:37:46 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,6 @@ static void	print_sorted_env(char **env)
 		printf("declare -x %s\n", env[i]);
 		i++;
 	}
-}
-
-char	*get_var_name(char *arg)
-{
-	int		i;
-	char	*name;
-
-	i = 0;
-	while (arg[i] && arg[i] != '=')
-		i++;
-	name = ft_substr(arg, 0, i);
-	return (name);
 }
 
 void	mis_export(t_command *cmd, t_minishell *shell)
