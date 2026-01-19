@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_pipes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 16:09:32 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 21:01:31 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:00:34 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	mis_pipes(t_command *cmd, t_minishell *shell)
 			return ;
 		if (pid == 0)
 		{
+			setchild_signals();
 			setup_pipe_fds(pipes, cmd_index, num_commands);
 			execute_child_command(cmd, shell);
 		}
