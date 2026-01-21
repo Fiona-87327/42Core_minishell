@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:53:02 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/19 17:37:46 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/21 11:39:00 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,14 @@ void	mis_export(t_command *cmd, t_minishell *shell)
 		if (is_valid_identifier(cmd->args[i]))
 		{
 			add_to_env(shell, cmd->args[i]);
+			shell->exit_status = 0;
 		}
 		else
 		{
 			ft_putstr_fd("bash: export: `", STDERR_FILENO);
 			ft_putstr_fd(cmd->args[i], STDERR_FILENO);
 			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			shell->exit_status = 1;
 		}
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:02:02 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/05 18:42:08 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/21 11:25:10 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	mis_echo(t_command *cmd, t_minishell *shell)
 	int	i;
 	int	newline;
 
-	(void)shell;
 	i = 1;
 	newline = 1;
 	while (cmd->args[i] && check_flag(cmd->args[i]))
@@ -52,4 +51,5 @@ void	mis_echo(t_command *cmd, t_minishell *shell)
 	}
 	if (newline)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	shell->exit_status = 0;
 }

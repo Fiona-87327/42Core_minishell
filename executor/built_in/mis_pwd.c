@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:51:46 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/05 20:33:00 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/21 11:36:17 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	mis_pwd(t_command *cmd, t_minishell *shell)
 	char	*cwd;
 
 	(void)cmd;
-	(void)shell;
 	cwd = malloc(sizeof(char) * PATH_MAX);
 	if (!cwd)
 		return ;
@@ -25,11 +24,13 @@ void	mis_pwd(t_command *cmd, t_minishell *shell)
 	{
 		ft_putstr_fd(cwd, STDOUT_FILENO);
 		ft_putchar_fd('\n', STDOUT_FILENO);
+		shell->exit_status = 0;
 	}
 	else
 	{
 		ft_putstr_fd("pwd: error retrieving current directory\n",
 			STDERR_FILENO);
+		shell->exit_status = 1;
 	}
 	free(cwd);
 }
