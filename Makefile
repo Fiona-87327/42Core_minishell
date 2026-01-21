@@ -22,15 +22,17 @@ SRCS = executor/built_in/mis_cd.c \
 	   executor/mis_redirections.c \
 	   executor/mis_pipes_helper.c \
 	   executor/mis_execute_cmd.c \
+	   executor/mis_input_handle.c \
 	   executor/mis_pipes.c \
+	   parser/expansion_utils.c \
 	   parser/expansion.c \
-	   parser/lexer.c \
 	   parser/lexer_utils.c \
-	   parser/syntax_checker.c \
-	   parser/mis_input_handle.c \
+	   parser/lexer.c \
+	   parser/mis_heredoc.c \
+	   parser/parser_utils.c \
 	   parser/parser.c \
 	   parser/quotes.c \
-	   parser/mis_heredoc.c \
+	   parser/syntax_checker.c \
 	   signal/mis_signal.c \
 	   main.c
 OBJS = $(SRCS:.c=.o)

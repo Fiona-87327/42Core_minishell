@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:01:07 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/18 08:27:50 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/19 16:59:14 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_from_shell(char *name, t_minishell *shell)
+char	*get_env_from_shell(char *name, t_minishell *shell)
 {
 	int	i;
 	int	len;
@@ -58,78 +58,41 @@ char	*expand_word(char *word, t_minishell *shell)
 	int			i;
 	t_quotes	quote;
 	char		*res;
-	char		*temp;
-	char		*var_name;
-	char		*value;
 
 	quote = NOT_IN_QUOTES;
 	res = ft_strdup("");
 	i = 0;
 	while (word[i])
 	{
-		if (word[i] == '\'' && quote != IN_DOUBLE_QUOTES)
-		{
-			if (quote == IN_SINGLE_QUOTES)
-				quote = NOT_IN_QUOTES;
-			else
-				quote = IN_SINGLE_QUOTES;
-			temp = res;
-			res = ft_strjoin_char(temp, word[i]);
-			free(temp);
-			i++;
-		}
-		else if (word[i] == '"' && quote != IN_SINGLE_QUOTES)
-		{
-			if (quote == IN_DOUBLE_QUOTES)
-				quote = NOT_IN_QUOTES;
-			else
-				quote = IN_DOUBLE_QUOTES;
-			temp = res;
-			res = ft_strjoin_char(temp, word[i]);
-			free(temp);
-			i++;
-		}
+		if (handle_quotes(word[i], &quote))
+			res = append_char(res, word[i++]);
 		else if (word[i] == '$' && quote != IN_SINGLE_QUOTES)
-		{
-			i++;
-			if (word[i] == '?')
-			{
-				temp = res;
-				value = ft_itoa(shell->exit_status);
-				res = ft_strjoin(temp, value);
-				free(temp);
-				free(value);
-				i++;
-			}
-			else if (ft_isalpha(word[i]) || word[i] == '_')
-			{
-				var_name = get_name_for_var(word, &i);
-				if (var_name)
-				{
-					value = get_env_from_shell(var_name, shell);
-					temp = res;
-					res = ft_strjoin(temp, value);
-					free(temp);
-					free(var_name);
-					free(value);
-				}
-			}
-			else
-			{
-				temp = res;
-				res = ft_strjoin_char(temp, '$');
-				free(temp);
-			}
-		}
+			res = dollar_expan(word, shell, &i, res);
 		else
 		{
-			temp = res;
-			res = ft_strjoin_char(temp, word[i]);
-			free(temp);
+			res = append_char(res, word[i]);
 			i++;
 		}
 	}
 	return (res);
+}
+
+static void	redirs_delete_quotes(t_command *cmd)
+{
+	char	*temp;
+
+	if (cmd->redir_in)
+	{
+		temp = cmd->redir_in;
+		cmd->redir_in = delete_quotes(temp);
+		free(temp);
+	}
+	if (cmd->redir_out)
+	{
+		temp = cmd->redir_out;
+		cmd->redir_out = delete_quotes(temp);
+		free(temp);
+	}
 }
 
 void	expand_cmds(t_command *cmds, t_minishell *sh)
@@ -150,18 +113,7 @@ void	expand_cmds(t_command *cmds, t_minishell *sh)
 			free(tmp);
 			i++;
 		}
-		if (cmd->redir_in)
-		{
-			tmp = cmd->redir_in;
-			cmd->redir_in = delete_quotes(tmp);
-			free(tmp);
-		}
-		if (cmd->redir_out)
-		{
-			tmp = cmd->redir_out;
-			cmd->redir_out = delete_quotes(tmp);
-			free(tmp);
-		}
+		redirs_delete_quotes(cmd);
 		cmd = cmd->next;
 	}
 }

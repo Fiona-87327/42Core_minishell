@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 11:17:34 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/17 15:10:28 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/18 14:18:05 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	handle_angle_brackets(char *str, t_token **tokens, int *i)
 	}
 }
 
-t_token	*tokenize(char *str)//not forget to delete '' ""
+t_token	*tokenize(char *str)
 {
 	t_token	*tokens;
 	int		i;
@@ -91,33 +91,5 @@ t_token	*tokenize(char *str)//not forget to delete '' ""
 		else
 			token_add_back(&tokens, add_new_tok(read_word(str, &i), WORD));
 	}
-	/*// DEBUG:
-	    printf("\n=== TOKENS ===\n");
-    t_token *debug = tokens;
-    int idx = 0;
-    while (debug)
-    {
-        printf("[%d] type=%d value=[%s]\n", idx, debug->type, debug->value);
-        debug = debug->next;
-        idx++;
-    }
-    printf("==============\n\n");
-	*/
 	return (tokens);
 }
-
-// void	print_tokens(t_token *t)
-// {
-// 	int i = 0;
-// 	while (t)
-// 	{
-// 		printf("token number %d    TYPE=%d VALUE=[%s]\n", i, t->type, t->value);
-// 		t = t->next;
-// 		i++;
-// 	}
-// }
-//  int main ()
-//  {
-// print_tokens(tokenize("ec < ho >> \"hellomjhgm m >> world\" | | gr >ep |h > out"));
-//  }
-// // // //to compile:  cc parsing/lexer.c -I../libft -Llibft -lft
