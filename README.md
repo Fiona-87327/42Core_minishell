@@ -11,8 +11,6 @@
 ## Resources
 
 - [GNU Bash Manual](https://www.gnu.org/software/bash/manual/bash.pdf)
-- [UNIX Programming FAQs](http://www.faqs.org/faqs/unix-faq/programmer/)
-- [Shell Command Language](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
 
 ### AI Usage
 
