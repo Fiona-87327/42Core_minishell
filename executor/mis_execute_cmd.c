@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cmd.c                                      :+:      :+:    :+:   */
+/*   mis_execute_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/18 12:41:01 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/18 12:41:08 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/22 15:41:22 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	execute_redirs_cmd(t_command *cmd, t_minishell *shell)
 	}
 	if (pid == 0)
 	{
+		setchild_signals();
 		if (mis_redirections(cmd->redirs) == -1)
 			exit(1);
 		execute_builtin_cmd(cmd, shell);
@@ -54,6 +55,8 @@ static int	execute_redirs_cmd(t_command *cmd, t_minishell *shell)
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		shell->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		shell->exit_status = 128 + WTERMSIG(status);
 	return (0);
 }
 

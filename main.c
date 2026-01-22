@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/19 17:21:01 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:45:40 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,30 @@ static char	**dup_env(char **envp)
 	return (new_env);
 }
 
+static void	setup_signal(void)
+{
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	sa_int.sa_handler = mis_signal_handler;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_quit, NULL);
+}
+
+static void	check_ctrl_c(t_minishell *shell)
+{
+	if (g_signal == SIGINT)
+	{
+		shell->exit_status = 130;
+		g_signal = 0;
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -40,13 +64,13 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, mis_signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	setup_signal();
 	rl_event_hook = mis_check_signal_event;
 	shell.env = dup_env(envp);
 	shell.exit_status = 0;
 	while (1)
 	{
+		check_ctrl_c(&shell);
 		input = readline("minishell$ ");
 		if (!input)
 		{
