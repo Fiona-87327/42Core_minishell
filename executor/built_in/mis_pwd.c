@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:51:46 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/22 11:32:37 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/22 15:47:43 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,7 @@ void	mis_pwd(t_command *cmd, t_minishell *shell)
 {
 	char	*cwd;
 
-	if (cmd->args[1] && cmd->args[1][0] == '-')
-	{
-		ft_putstr_fd("pwd: bad option: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->args[1], STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		shell->exit_status = 2;
-		return ;
-	}
+	(void)cmd;
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
