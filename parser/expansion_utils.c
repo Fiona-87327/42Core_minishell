@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 13:21:36 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/19 16:59:20 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/23 13:11:50 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,7 @@ char	*dollar_expan(char *word, t_minishell *sh, int *i, char *res)
 		}
 	}
 	else
-	{
 		res = append_char(res, '$');
-		(*i)++;
-	}
 	return (res);
 }
 
