@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/23 16:19:48 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:22:30 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	minishell_loop(t_minishell *shell)
 
 	while (1)
 	{
+		check_ctrl_c(shell);
 		input = get_input();
 		if (!input)
 			break ;
