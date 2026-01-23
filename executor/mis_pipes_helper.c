@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 18:54:43 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 21:01:53 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:57:25 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,42 @@ void	execute_child_command(t_command *cmd, t_minishell *shell)
 	}
 	else
 		mis_exec_cmd(cmd, shell);
+}
+
+void	free_pipes_memory(int **pipes, int num_pipes)
+{
+	int	i;
+
+	if (!pipes)
+		return ;
+	i = 0;
+	while (i < num_pipes)
+	{
+		free(pipes[i]);
+		i++;
+	}
+	free(pipes);
+}
+
+void	wait_all_children(pid_t last_pid, t_minishell *shell)
+{
+	int		status;
+	pid_t	current_pid;
+	int		last_status;
+
+	last_status = 0;
+	while (1)
+	{
+		current_pid = wait(&status);
+		if (current_pid <= 0)
+			break ;
+		if (current_pid == last_pid)
+		{
+			if (WIFEXITED(status))
+				last_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				last_status = 128 + WTERMSIG(status);
+		}
+	}
+	shell->exit_status = last_status;
 }
