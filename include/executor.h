@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/23 17:20:47 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:09:56 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void							free_cmds(t_command *cmds);
 char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
-char							**expand_args(char **args, t_minishell *shell);
 void							free_pipes_memory(int **pipes, int num_pipes);
 void							wait_all_children(pid_t last_pid,
 									t_minishell *shell);

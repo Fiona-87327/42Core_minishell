@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/23 16:18:41 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:03:41 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static void	handle_exec_error(char *cmd)
 
 void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
-	char	*path;
+	char		*path;
+	struct stat	st;
 
 	if (mis_redirections(cmd->redirs) == -1)
 		exit(1);
@@ -81,6 +82,13 @@ void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 		path = get_path(cmd->args[0], shell->env);
 	if (!path || access(path, F_OK) != 0)
 		handle_exec_error(cmd->args[0]);
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		exit(126);
+	}
 	execve(path, cmd->args, shell->env);
 	perror("execve");
 	exit(1);
