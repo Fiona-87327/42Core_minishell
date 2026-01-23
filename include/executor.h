@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/22 11:46:29 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:56:39 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 # include "parser.h"
+# include <sys/types.h>
 
 typedef enum e_redirect_type	t_redirect_type;
 typedef enum e_quotes			t_quotes;
@@ -73,6 +74,9 @@ char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
 char							**expand_args(char **args, t_minishell *shell);
+void							free_pipes_memory(int **pipes, int num_pipes);
+void							wait_all_children(pid_t last_pid,
+									t_minishell *shell);
 
 /* Redirections */
 int								mis_redirections(t_redir *redir);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_pipes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 16:09:32 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/19 18:00:34 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:59:02 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,35 @@ static void	setup_pipe_fds(int **pipes, int cmd_index, int num_commands)
 	close_pipes(pipes, num_commands - 1);
 }
 
+// void	mis_pipes(t_command *cmd, t_minishell *shell)
+// {
+// 	int		num_commands;
+// 	int		**pipes;
+// 	int		cmd_index;
+// 	pid_t	pid;
+
+// 	num_commands = count_commands(cmd);
+// 	create_pipes(&pipes, num_commands - 1);
+// 	cmd_index = 0;
+// 	while (cmd)
+// 	{
+// 		pid = fork();
+// 		if (pid == -1)
+// 			return ;
+// 		if (pid == 0)
+// 		{
+// 			setchild_signals();
+// 			setup_pipe_fds(pipes, cmd_index, num_commands);
+// 			execute_child_command(cmd, shell);
+// 		}
+// 		cmd = cmd->next;
+// 		cmd_index++;
+// 	}
+// 	close_pipes(pipes, num_commands - 1);
+// 	while (num_commands-- > 0)
+// 		wait(NULL);
+// }
+
 void	mis_pipes(t_command *cmd, t_minishell *shell)
 {
 	int		num_commands;
@@ -80,7 +109,7 @@ void	mis_pipes(t_command *cmd, t_minishell *shell)
 	{
 		pid = fork();
 		if (pid == -1)
-			return ;
+			break ;
 		if (pid == 0)
 		{
 			setchild_signals();
@@ -91,6 +120,6 @@ void	mis_pipes(t_command *cmd, t_minishell *shell)
 		cmd_index++;
 	}
 	close_pipes(pipes, num_commands - 1);
-	while (num_commands-- > 0)
-		wait(NULL);
+	wait_all_children(pid, shell);
+	free_pipes_memory(pipes, num_commands - 1);
 }
