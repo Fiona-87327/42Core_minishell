@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 14:39:25 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/19 17:58:53 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/23 11:49:38 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	mis_check_signal_event(void)
 {
 	if (g_signal == SIGINT)
 	{
-		g_signal = 0;
-		write(1, "\n", 1);
-		rl_on_new_line();
 		rl_replace_line("", 0);
+		rl_on_new_line();
 		rl_redisplay();
+		rl_done = 1;
+		return (1);
 	}
 	return (0);
 }
