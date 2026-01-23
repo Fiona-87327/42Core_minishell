@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/18 13:08:14 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/22 16:59:36 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/23 19:04:45 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	handle_input(char *input, t_minishell *shell)
 	t_token		*tokens;
 	t_command	*cmds;
 
+	if (ft_isspaces(input))
+		return ;
 	if (!*input)
 		return ;
 	add_history(input);
