@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:54:41 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/23 20:52:37 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/24 15:11:22 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	mis_exit(t_command *cmd, t_minishell *shell)
 	{
 		if (!is_numeric(cmd->args[1]))
 		{
-			ft_putstr_fd("bash: exit: ", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(cmd->args[1], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			exit(2);
 		}
 		if (cmd->args[2])
 		{
-			ft_putstr_fd("bash: exit: too many arguments\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 			shell->exit_status = 1;
 			return ;
 		}

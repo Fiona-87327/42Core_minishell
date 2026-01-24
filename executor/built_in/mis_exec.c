@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 13:37:34 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/24 15:07:35 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,59 +51,56 @@ static char	*get_path(char *cmd, char **envp)
 		free(path);
 		i++;
 	}
-	free_paths(paths);
-	return (NULL);
+	return (free_paths(paths), NULL);
 }
 
 static void	handle_exec_error(char *cmd)
 {
-	struct stat	path_stat;
-	int			is_dir;
+	struct stat	st;
 
-	is_dir = (stat(cmd, &path_stat) == 0 && S_ISDIR(path_stat.st_mode));
-	if (errno == EACCES)
+	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
 	{
-		ft_putstr_fd("bash: ", STDERR_FILENO);
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		if (is_dir)
-			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
-		else
-			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
 		exit(126);
 	}
-	if (ft_strchr(cmd, '/'))
+	if (errno == EACCES)
 	{
-		ft_putstr_fd("bash: ", STDERR_FILENO);
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		exit(126);
 	}
-	else
-	{
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	}
+	perror("minishell");
 	exit(127);
 }
 
 void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
 	char	*path;
+	char	**actual_args;
 
-	if (!cmd || !cmd->args[0] || !cmd->args[0][0])
-		return ;
+	if (!cmd || !cmd->args)
+		exit(0);
+	actual_args = cmd->args;
+	while (*actual_args && **actual_args == '\0')
+		actual_args++;
+	if (!*actual_args)
+		exit(0);
 	if (mis_redirections(cmd->redirs) == -1)
-		return ;
-	if (ft_strchr(cmd->args[0], '/'))
-		path = cmd->args[0];
+		exit(1);
+	if (ft_strchr(*actual_args, '/'))
+		path = *actual_args;
 	else
-		path = get_path(cmd->args[0], shell->env);
+		path = get_path(*actual_args, shell->env);
 	if (!path)
 	{
-		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		ft_putstr_fd(*actual_args, 2);
+		ft_putstr_fd(": command not found\n", 2);
 		exit(127);
 	}
-	execve(path, cmd->args, shell->env);
+	execve(path, actual_args, shell->env);
 	handle_exec_error(path);
 }
 

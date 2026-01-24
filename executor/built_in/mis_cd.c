@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 18:45:31 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/21 14:20:06 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/24 15:11:12 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ static char	*handle_cd_args(char *arg, t_minishell *shell)
 	{
 		dir = get_env_value(shell->env, "HOME");
 		if (!dir)
-			ft_putstr_fd("bash: cd: HOME not set\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
 		return (dir);
 	}
 	else if (ft_strncmp(arg, "-", 2) == 0)
 	{
 		dir = get_env_value(shell->env, "OLDPWD");
 		if (!dir)
-			ft_putstr_fd("bash: cd: OLDPWD not set\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: cd: OLDPWD not set\n", STDERR_FILENO);
 		else
 			ft_putendl_fd(dir, STDOUT_FILENO);
 		return (dir);
@@ -64,7 +64,7 @@ static void	perform_cd_exec(t_minishell *shell, char *dir, char *arg, char *old)
 {
 	if (chdir(dir) != 0)
 	{
-		ft_putstr_fd("bash: cd: ", STDERR_FILENO);
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 		if (arg)
 			ft_putstr_fd(arg, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
@@ -84,7 +84,7 @@ void	mis_cd(t_command *cmd, t_minishell *shell)
 
 	if (cmd->args[1] && cmd->args[2])
 	{
-		ft_putstr_fd("bash: cd: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
 		shell->exit_status = 1;
 		return ;
 	}

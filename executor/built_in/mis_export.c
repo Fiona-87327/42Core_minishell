@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:53:02 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/21 11:39:00 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/24 15:11:33 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	mis_export(t_command *cmd, t_minishell *shell)
 		}
 		else
 		{
-			ft_putstr_fd("bash: export: `", STDERR_FILENO);
+			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 			ft_putstr_fd(cmd->args[i], STDERR_FILENO);
 			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 			shell->exit_status = 1;

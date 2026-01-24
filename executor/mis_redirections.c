@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 15:29:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/17 21:01:31 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/24 15:23:30 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,16 @@ static int	redirect_output(t_redir *redir)
 	fd = open(redir->filename, flags, 0644);
 	if (fd < 0)
 	{
+		write(2, "minishell: ", 11);
 		perror(redir->filename);
 		return (-1);
 	}
-	dup2(fd, STDOUT_FILENO);
+	if (dup2(fd, STDOUT_FILENO) < 0)
+	{
+		perror("dup2");
+		close(fd);
+		return (-1);
+	}
 	close(fd);
 	return (0);
 }
@@ -39,6 +45,7 @@ static int	redirect_intput(t_redir *redir)
 	fd = open(redir->filename, O_RDONLY);
 	if (fd < 0)
 	{
+		write(2, "minishell: ", 11);
 		perror(redir->filename);
 		return (-1);
 	}
