@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:54:41 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 15:11:22 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/24 16:52:02 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,22 @@ static int	is_numeric(char *str)
 	}
 	return (1);
 }
+long long	ft_atoll(const char *str)
+{
+	unsigned long long	result;
+	int					sign;
+	int					i;
+
+	result = 0;
+	sign = 1;
+	i = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (sign * result);
+}
 
 void	mis_exit(t_command *cmd, t_minishell *shell)
 {
@@ -40,15 +56,18 @@ void	mis_exit(t_command *cmd, t_minishell *shell)
 			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(cmd->args[1], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-			exit(2);
+			shell->exit_status = 2;
+			return ;
 		}
 		if (cmd->args[2])
 		{
-			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: too many arguments\n",
+							STDERR_FILENO);
 			shell->exit_status = 1;
 			return ;
 		}
-		exit(ft_atoi(cmd->args[1]));
+		shell->exit_status = (unsigned char)ft_atoll(cmd->args[1]);
+		return ;
 	}
-	exit(shell->exit_status);
+	return ;
 }
