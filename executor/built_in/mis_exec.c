@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 13:24:57 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/24 13:26:22 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static void	handle_exec_error(char *cmd)
 void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
 	char		*path;
-	struct stat	st;
 
 	if (mis_redirections(cmd->redirs) == -1)
 		exit(1);
