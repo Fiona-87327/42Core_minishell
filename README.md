@@ -9,7 +9,7 @@
 ## Instructions
 #### Installation
 Clone the repo:
-111bash
+```bash
 git clone https://github.com/Fiona-87327/minishell.git
 ```
 
