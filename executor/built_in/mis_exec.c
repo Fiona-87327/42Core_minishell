@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 13:03:07 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/24 13:37:34 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static char	*get_path(char *cmd, char **envp)
 	int		i;
 
 	i = 0;
+	if (!cmd || cmd[0] == '\0')
+		return (NULL);
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
@@ -61,7 +63,7 @@ static void	handle_exec_error(char *cmd)
 	is_dir = (stat(cmd, &path_stat) == 0 && S_ISDIR(path_stat.st_mode));
 	if (errno == EACCES)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd("bash: ", STDERR_FILENO);
 		ft_putstr_fd(cmd, STDERR_FILENO);
 		if (is_dir)
 			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
@@ -87,8 +89,10 @@ void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
 	char	*path;
 
+	if (!cmd || !cmd->args[0] || !cmd->args[0][0])
+		return ;
 	if (mis_redirections(cmd->redirs) == -1)
-		exit(1);
+		return ;
 	if (ft_strchr(cmd->args[0], '/'))
 		path = cmd->args[0];
 	else
