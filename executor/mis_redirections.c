@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 15:29:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 15:23:30 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/25 16:32:28 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ static int	redirect_intput(t_redir *redir)
 		perror(redir->filename);
 		return (-1);
 	}
-	dup2(fd, STDIN_FILENO);
+	if (dup2(fd, STDIN_FILENO) < 0)
+	{
+		perror("dup2");
+		close(fd);
+		return (-1);
+	}
 	close(fd);
 	return (0);
 }
