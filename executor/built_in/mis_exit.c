@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:54:41 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 18:22:17 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:01:14 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	mis_exit(t_command *cmd, t_minishell *shell)
 			ft_putstr_fd(cmd->args[1], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			shell->exit_status = 2;
+			shell->should_exit = 1;
 			return ;
 		}
 		if (cmd->args[2])
@@ -76,7 +77,8 @@ void	mis_exit(t_command *cmd, t_minishell *shell)
 			return ;
 		}
 		shell->exit_status = (unsigned char)ft_atoll(cmd->args[1]);
+		shell->should_exit = 1;
 		return ;
 	}
-	return ;
+	shell->should_exit = 1;
 }
