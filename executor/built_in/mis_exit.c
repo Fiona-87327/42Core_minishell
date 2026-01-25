@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:54:41 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 13:01:14 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:48:24 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ long long	ft_atoll(const char *str)
 
 void	mis_exit(t_command *cmd, t_minishell *shell)
 {
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	if (isatty(STDIN_FILENO))
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (cmd->args[1])
 	{
 		if (!is_numeric(cmd->args[1]))

@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 16:09:08 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/25 15:11:53 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ static void	handle_exec_error(char *cmd)
 		ft_putstr_fd(": Permission denied\n", 2);
 		exit(126);
 	}
-	perror("minishell");
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	exit(127);
 }
 
