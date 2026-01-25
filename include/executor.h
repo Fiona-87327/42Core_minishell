@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 12:34:05 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:02:13 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void							handle_child_status(int status,
 int								ft_arraylen(char **array);
 void							ft_free_array(char **array);
 void							free_cmds(t_command *cmds);
+void							free_paths(char **paths);
 char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);

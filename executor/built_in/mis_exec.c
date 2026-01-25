@@ -6,24 +6,11 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 16:59:05 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:05:08 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	free_paths(char **paths)
-{
-	int	i;
-
-	i = 0;
-	while (paths[i])
-	{
-		free(paths[i]);
-		i++;
-	}
-	free(paths);
-}
 
 static char	*get_path(char *cmd, char **envp)
 {
@@ -78,54 +65,30 @@ static void	handle_exec_error(char *cmd)
 	exit(127);
 }
 
-// void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
-// {
-// 	char	*path;
-// 	char	**actual_args;
+static void	check_directory(char *path)
+{
+	struct stat	st;
 
-// 	if (!cmd || !cmd->args)
-// 		exit(0);
-// 	actual_args = cmd->args;
-// 	while (*actual_args && **actual_args == '\0')
-// 		actual_args++;
-// 	if (!*actual_args)
-// 		exit(0);
-// 	if (mis_redirections(cmd->redirs) == -1)
-// 		exit(1);
-// 	if (ft_strchr(*actual_args, '/'))
-// 		path = *actual_args;
-// 	else
-// 		path = get_path(*actual_args, shell->env);
-// 	if (!path)
-// 	{
-// 		ft_putstr_fd(*actual_args, 2);
-// 		ft_putstr_fd(": command not found\n", 2);
-// 		exit(127);
-// 	}
-// 	execve(path, actual_args, shell->env);
-// 	handle_exec_error(path);
-// }
+	if (ft_strchr(path, '/') && stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": Is a directory", 2);
+		exit(126);
+	}
+}
 
 void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
-	char		*path;
-	struct stat	st;
+	char	*path;
 
 	if (!cmd || !cmd->args || !cmd->args[0])
 		exit(0);
 	if (mis_redirections(cmd->redirs) == -1)
 		exit(1);
+	check_directory(cmd->args[0]);
 	if (ft_strchr(cmd->args[0], '/'))
-	{
 		path = cmd->args[0];
-		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(path, 2);
-			ft_putendl_fd(": Is a directory", 2);
-			exit(126);
-		}
-	}
 	else
 		path = get_path(cmd->args[0], shell->env);
 	if (!path)
