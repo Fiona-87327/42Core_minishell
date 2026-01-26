@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_input_handle.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/18 13:08:14 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 12:55:01 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/24 13:22:01 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	handle_input(char *input, t_minishell *shell)
 	t_token		*tokens;
 	t_command	*cmds;
 
+	if (ft_isspaces(input))
+		return ;
 	if (!*input)
 		return ;
 	add_history(input);

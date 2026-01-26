@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:54:41 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 16:52:02 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:35:12 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ static int	is_numeric(char *str)
 		return (0);
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]))
+		if (str[i] < '0' || str[i] > '9')
 			return (0);
 		i++;
 	}
 	return (1);
 }
+
 long long	ft_atoll(const char *str)
 {
 	unsigned long long	result;
@@ -38,17 +39,26 @@ long long	ft_atoll(const char *str)
 	result = 0;
 	sign = 1;
 	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = result * 10 + (str[i] - '0');
 		i++;
 	}
-	return (sign * result);
+	return ((long long)(result * sign));
 }
 
 void	mis_exit(t_command *cmd, t_minishell *shell)
 {
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	if (isatty(STDIN_FILENO))
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (cmd->args[1])
 	{
 		if (!is_numeric(cmd->args[1]))

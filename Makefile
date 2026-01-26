@@ -36,7 +36,8 @@ SRCS = executor/built_in/mis_cd.c \
 	   signal/mis_signal.c \
 	   signal/setup_signal.c \
 	   main.c
-OBJS = $(SRCS:.c=.o)
+OBJDIR = obj
+OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 
 LIBFT_DIR = libft
 
@@ -48,7 +49,8 @@ all: $(NAME)
 	@echo "$(G)[SUCCESS]$(NC) minishell compiled!"
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS)
-%.o: %.c
+$(OBJDIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)

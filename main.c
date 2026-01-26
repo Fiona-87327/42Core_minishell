@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/23 17:23:05 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:45:25 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,16 @@ void	minishell_loop(t_minishell *shell)
 	while (1)
 	{
 		check_ctrl_c(shell);
+		if (shell->should_exit)
+			break ;
 		input = get_input();
 		if (!input)
+		{
+			if (isatty(STDIN_FILENO))
+				ft_putstr_fd("exit\n", STDOUT_FILENO);
+			shell->should_exit = 1;
 			break ;
+		}
 		if (*input)
 		{
 			if (isatty(STDIN_FILENO))
@@ -82,9 +89,9 @@ void	minishell_loop(t_minishell *shell)
 			handle_input(input, shell);
 		}
 		free(input);
+		if (shell->should_exit)
+			break ;
 	}
-	if (isatty(STDIN_FILENO))
-		ft_putstr_fd("exit\n", STDOUT_FILENO);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -97,6 +104,7 @@ int	main(int ac, char **av, char **envp)
 	rl_event_hook = mis_check_signal_event;
 	shell.env = dup_env(envp);
 	shell.exit_status = 0;
+	shell.should_exit = 0;
 	minishell_loop(&shell);
 	ft_free_array(shell.env);
 	return (shell.exit_status);

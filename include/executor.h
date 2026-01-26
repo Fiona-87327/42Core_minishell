@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/23 17:20:47 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:02:13 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_minishell
 {
 	char						**env;
 	int							exit_status;
+	int							should_exit;
 }								t_minishell;
 
 void							mis_cd(t_command *cmd, t_minishell *shell);
@@ -74,10 +75,10 @@ void							handle_child_status(int status,
 int								ft_arraylen(char **array);
 void							ft_free_array(char **array);
 void							free_cmds(t_command *cmds);
+void							free_paths(char **paths);
 char							*get_var_name(char *arg);
 char							*get_env_value(char **env, char *key);
 void							add_to_env(t_minishell *shell, char *arg);
-char							**expand_args(char **args, t_minishell *shell);
 void							free_pipes_memory(int **pipes, int num_pipes);
 void							wait_all_children(pid_t last_pid,
 									t_minishell *shell);

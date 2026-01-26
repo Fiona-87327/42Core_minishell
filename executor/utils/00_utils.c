@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:15:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/19 17:45:42 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:01:14 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,28 @@ void	free_cmds(t_command *cmds)
 		}
 		free(tmp);
 	}
+}
+
+void	free_paths(char **paths)
+{
+	int	i;
+
+	i = 0;
+	while (paths[i])
+	{
+		free(paths[i]);
+		i++;
+	}
+	free(paths);
+}
+
+char	*get_shell_status(t_minishell *sh, int *i, char *res)
+{
+	char	*value;
+
+	value = ft_itoa(sh->exit_status);
+	res = append_str(res, value);
+	free(value);
+	(*i)++;
+	return (res);
 }
