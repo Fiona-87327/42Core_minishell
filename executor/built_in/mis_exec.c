@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 19:05:08 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/26 11:42:28 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,11 @@ void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 	{
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putendl_fd(": command not found", 2);
+		exit(127);
+	}
+	if (!ft_strcmp(cmd->args[0], "..") || !ft_strcmp(cmd->args[0], "."))
+	{
+		ft_putstr_fd("minishell: ..: command not found\n", 2);
 		exit(127);
 	}
 	execve(path, cmd->args, shell->env);
