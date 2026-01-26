@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 11:42:28 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/26 17:15:33 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ static void	check_directory(char *path)
 {
 	struct stat	st;
 
+	if ((ft_strcmp(path, ".") == 0 || ft_strcmp(path, "..") == 0))
+		return ;
 	if (ft_strchr(path, '/') && stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -78,30 +80,43 @@ static void	check_directory(char *path)
 	}
 }
 
+static void	mis_exec_dot_error(void)
+{
+	ft_putstr_fd("minishell: .: filename argument required\n", 2);
+	ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
+	exit(2);
+}
+
+static void	mis_exec_cmd_not_found(char *cmd)
+{
+	ft_putstr_fd(cmd, 2);
+	ft_putendl_fd(": command not found", 2);
+	exit(127);
+}
+
+static char	*mis_exec_get_path(t_command *cmd, t_minishell *shell)
+{
+	if (ft_strchr(cmd->args[0], '/'))
+		return (cmd->args[0]);
+	return (get_path(cmd->args[0], shell->env));
+}
+
 void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
 	char	*path;
 
+	if (cmd->args && cmd->args[0] && ft_strcmp(cmd->args[0], ".") == 0
+		&& !cmd->args[1])
+		mis_exec_dot_error();
 	if (!cmd || !cmd->args || !cmd->args[0])
 		exit(0);
 	if (mis_redirections(cmd->redirs) == -1)
 		exit(1);
 	check_directory(cmd->args[0]);
-	if (ft_strchr(cmd->args[0], '/'))
-		path = cmd->args[0];
-	else
-		path = get_path(cmd->args[0], shell->env);
-	if (!path)
-	{
-		ft_putstr_fd(cmd->args[0], 2);
-		ft_putendl_fd(": command not found", 2);
-		exit(127);
-	}
-	if (!ft_strcmp(cmd->args[0], "..") || !ft_strcmp(cmd->args[0], "."))
-	{
-		ft_putstr_fd("minishell: ..: command not found\n", 2);
-		exit(127);
-	}
+	path = mis_exec_get_path(cmd, shell);
+	if (!path || ft_strcmp(cmd->args[0], ".") == 0 || ft_strcmp(cmd->args[0],
+			"..") == 0)
+		mis_exec_cmd_not_found(cmd->args[0]);
 	execve(path, cmd->args, shell->env);
 	handle_exec_error(path);
 }

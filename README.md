@@ -4,7 +4,13 @@
 
 ## Description
 
-`minishell` is a simplified Unix shell built for educational purposes as part of the 42 curriculum. Its goal is to help students understand the fundamentals of command-line interpreters, process management, parsing, and I/O redirection. The project aims to replicate the core behavior of a shell, accepting user commands, executing them, handling errors, and managing environment variables.
+`minishell` is a simplified Unix shell built for educational purposes as part of the 42 curriculum. Its goal is to help students understand the fundamentals of command-line interpreters, process management, parsing, and I/O redirection. The project aims to replicate the core behavior of a shell, accepting user commands, executing them, handling errors, and managing environment variables and reacting to system signals.
+
+The shell reads commands, applies quoting and variable‑expansion rules, runs built‑in functions, and executes external programs found through the PATH variable. It supports input/output redirections, pipelines, and heredocs, allowing users to combine commands and control data flow much like in Bash. Minishell also manages environment variables, including $?, which stores the exit status of the last executed command.
+
+Signal handling is an important part of the project. Minishell must react to Ctrl‑C, Ctrl‑D, and Ctrl‑\ the same way Bash does in interactive mode, without breaking its internal state. The project allows using only one global variable to track signals, ensuring that signal handlers stay simple and safe.
+
+By building Minishell, students learn how command interpreters work, how processes interact, and how Unix systems manage execution. The project encourages clean structure, modular code, and careful memory management, resulting in a functional and reliable mini‑shell.
 
 ## Instructions
 #### Installation

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 19:02:13 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/26 13:46:01 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void							add_to_env(t_minishell *shell, char *arg);
 void							free_pipes_memory(int **pipes, int num_pipes);
 void							wait_all_children(pid_t last_pid,
 									t_minishell *shell);
+char							**init_min_env(void);
 
 /* Redirections */
 int								mis_redirections(t_redir *redir);
