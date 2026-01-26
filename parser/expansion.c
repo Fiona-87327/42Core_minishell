@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:01:07 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/26 17:15:40 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/26 18:31:07 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,36 +76,6 @@ char	*expand_word(char *word, t_minishell *shell)
 	}
 	return (res);
 }
-
-// char	*expand_word(char *word, t_minishell *shell)
-// {
-// 	int			i;
-// 	t_quotes	quote;
-// 	char		*res;
-
-// 	i = 0;
-// 	quote = NOT_IN_QUOTES;
-// 	res = ft_strdup("");
-// 	while (word[i])
-// 	{
-// 		if (word[i] == '$' && quote == NOT_IN_QUOTES && (word[i + 1] == '"'
-// 				|| word[i + 1] == '\''))
-// 		{
-// 			i++; // 仅仅跳过 $，不拼接
-// 			continue ;
-// 		}
-// 		if (handle_quotes(word[i], &quote))
-// 		{
-// 			i++; // 吞掉引号
-// 			continue ;
-// 		}
-// 		else if (word[i] == '$' && quote != IN_SINGLE_QUOTES)
-// 			res = dollar_expan(word, shell, &i, res);
-// 		else
-// 			res = append_char(res, word[i++]);
-// 	}
-// 	return (res);
-// }
 
 static void	redirs_delete_quotes(t_command *cmd)
 {

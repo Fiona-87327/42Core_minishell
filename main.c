@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:19:12 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 17:15:55 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/26 18:31:19 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,26 @@ void	minishell_loop(t_minishell *shell)
 	}
 }
 
+static void	update_shlvl(t_minishell *sh)
+{
+	char	*current_val;
+	int		lvl;
+	char	*new_val;
+	char	*tmp;
+
+	current_val = get_env_value(sh->env, "SHLVL");
+	if (current_val)
+		lvl = ft_atoi(current_val);
+	else
+		lvl = 0;
+	lvl++;
+	new_val = ft_itoa(lvl);
+	tmp = ft_strjoin("SHLVL=", new_val);
+	add_to_env(sh, tmp);
+	free(new_val);
+	free(tmp);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_minishell	shell;
@@ -92,6 +112,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	setup_signal();
 	shell.env = dup_env(envp);
+	update_shlvl(&shell);
 	if (!shell.env || !shell.env[0])
 		shell.env = init_min_env();
 	shell.exit_status = 0;

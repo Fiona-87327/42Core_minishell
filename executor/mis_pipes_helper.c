@@ -6,7 +6,7 @@
 /*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 18:54:43 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 11:00:14 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/26 18:32:05 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ static void	run_builtin(t_command *cmd, t_minishell *shell)
 
 void	execute_child_command(t_command *cmd, t_minishell *shell)
 {
-	if ((!cmd->args || !cmd->args[0]) && cmd->redirs)
+	if (!cmd->args || !cmd->args[0])
 	{
 		if (mis_redirections(cmd->redirs) == -1)
 			exit(1);
 		exit(0);
 	}
-	if (cmd->args && cmd->args[0] && is_builtin(cmd->args[0]))
+	if (is_builtin(cmd->args[0]))
 	{
 		if (mis_redirections(cmd->redirs) == -1)
 			exit(1);
