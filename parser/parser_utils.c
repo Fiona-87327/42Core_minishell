@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/18 16:58:29 by mhnatovs          #+#    #+#             */
-/*   Updated: 2026/01/23 13:38:39 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/26 12:02:06 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ int	add_redir(t_command *cmd, t_token_type type, char *filename)
 	new = add_redir_define_type(type);
 	if (!new)
 		return (1);
-	new->filename = delete_quotes(filename);
+	if (type == HEREDOC)
+		new->filename = ft_strdup(filename);
+	else
+		new->filename = delete_quotes(filename);
 	if (!new->filename)
 	{
 		free(new);

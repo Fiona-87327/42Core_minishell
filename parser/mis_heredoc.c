@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:35:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 16:37:01 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/26 12:08:00 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,34 @@ static char	*get_heredoc_line(void)
 	return (line);
 }
 
+static int	heredoc_is_quoted(const char *delim)
+{
+	while (*delim)
+	{
+		if (*delim == '\'' || *delim == '"')
+			return (1);
+		delim++;
+	}
+	return (0);
+}
+
 static int	read_heredoc(const char *delimiter, t_minishell *shell)
 {
 	int		fd[2];
 	char	*line;
+	char	*clean_delim;
 	int		quoted;
 
-	quoted = is_quote(delimiter[0]);
+	quoted = heredoc_is_quoted(delimiter);
+	clean_delim = delete_quotes((char *)delimiter);
 	if (pipe(fd) == -1)
-		return (-1);
+		return (free(clean_delim), -1);
 	while (1)
 	{
 		line = get_heredoc_line();
 		if (!line)
 			break ;
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
+		if (ft_strncmp(line, clean_delim, ft_strlen(clean_delim) + 1) == 0)
 		{
 			free(line);
 			break ;
@@ -62,9 +75,36 @@ static int	read_heredoc(const char *delimiter, t_minishell *shell)
 		handle_heredoc_line(line, fd[1], shell, quoted);
 		free(line);
 	}
+	free(clean_delim);
 	close(fd[1]);
 	return (fd[0]);
 }
+
+// static int	read_heredoc(const char *delimiter, t_minishell *shell)
+// {
+// 	int		fd[2];
+// 	char	*line;
+// 	int		quoted;
+
+// 	quoted = is_quote(delimiter[0]);
+// 	if (pipe(fd) == -1)
+// 		return (-1);
+// 	while (1)
+// 	{
+// 		line = get_heredoc_line();
+// 		if (!line)
+// 			break ;
+// 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
+// 		{
+// 			free(line);
+// 			break ;
+// 		}
+// 		handle_heredoc_line(line, fd[1], shell, quoted);
+// 		free(line);
+// 	}
+// 	close(fd[1]);
+// 	return (fd[0]);
+// }
 
 void	process_heredocs(t_command *cmds, t_minishell *shell)
 {
