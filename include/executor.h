@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 20:38:57 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/27 13:03:50 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void							mis_exec(t_command *cmd, t_minishell *shell);
 void							mis_exec_cmd(t_command *cmd,
 									t_minishell *shell);
 void							mis_pipes(t_command *cmd, t_minishell *shell);
+char							*handle_cd_args(char *arg, t_minishell *shell);
 void							handle_exec_error(char *cmd);
 void							check_directory(char *path);
 void							mis_exec_dot_error(void);

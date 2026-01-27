@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 18:45:31 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/27 11:35:56 by mhnatovs         ###   ########.fr       */
+/*   Updated: 2026/01/27 13:02:38 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,48 @@ static void	update_pwd(t_minishell *shell, char *key, char *value)
 	free(entry);
 }
 
-static char	*handle_cd_args(char *arg, t_minishell *shell)
-{
-	char	*dir;
+// static char	*handle_cd_args(char *arg, t_minishell *shell)
+// {
+// 	char	*dir;
+// 	char	*home;
+// 	size_t	home_len;
+// 	size_t	arg_len;
 
-	if (!arg || (ft_strncmp(arg, "~", 2) == 0))
-	{
-		dir = get_env_value(shell->env, "HOME");
-		if (!dir)
-			ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
-		return (dir);
-	}
-	else if (ft_strncmp(arg, "-", 2) == 0)
-	{
-		dir = get_env_value(shell->env, "OLDPWD");
-		if (!dir)
-			ft_putstr_fd("minishell: cd: OLDPWD not set\n", STDERR_FILENO);
-		else
-			ft_putendl_fd(dir, STDOUT_FILENO);
-		return (dir);
-	}
-	return (arg);
-}
+// 	if (!arg || (ft_strncmp(arg, "~", 2) == 0))
+// 	{
+// 		dir = get_env_value(shell->env, "HOME");
+// 		if (!dir)
+// 			ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
+// 		return (dir);
+// 	}
+// 	if (arg && arg[0] == '~' && (arg[1] == '/' || arg[1] == '\0'))
+// 	{
+// 		home = get_env_value(shell->env, "HOME");
+// 		if (!home)
+// 		{
+// 			ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
+// 			return (NULL);
+// 		}
+// 		home_len = ft_strlen(home);
+// 		arg_len = ft_strlen(arg);
+// 		char *expanded = malloc(home_len + arg_len);
+// 		if (!expanded)
+// 			return (NULL);
+// 		ft_strlcpy(expanded, home, home_len + arg_len);
+// 		ft_strlcat(expanded, arg + 1, home_len + arg_len);
+// 		return (expanded);
+// 	}
+// 	else if (ft_strncmp(arg, "-", 2) == 0)
+// 	{
+// 		dir = get_env_value(shell->env, "OLDPWD");
+// 		if (!dir)
+// 			ft_putstr_fd("minishell: cd: OLDPWD not set\n", STDERR_FILENO);
+// 		else
+// 			ft_putendl_fd(dir, STDOUT_FILENO);
+// 		return (dir);
+// 	}
+// 	return (arg);
+// }
 
 static void	update_pwds(t_minishell *shell, char *old_pwd)
 {

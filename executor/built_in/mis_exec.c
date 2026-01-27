@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 20:37:37 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/27 12:47:37 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,39 @@ static char	*mis_exec_get_path(t_command *cmd, t_minishell *shell)
 	return (get_path(cmd->args[0], shell->env));
 }
 
+static void	handle_special_cases(t_command *cmd, t_minishell *shell)
+{
+	char		*home;
+	struct stat	st;
+
+	if (cmd->args && cmd->args[0] && ft_strcmp(cmd->args[0], "~") == 0)
+	{
+		home = get_env_value(shell->env, "HOME");
+		if (!home)
+		{
+			ft_putstr_fd("minishell: ~: command not found\n", 2);
+			exit(127);
+		}
+		if (stat(home, &st) == 0 && S_ISDIR(st.st_mode))
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(home, 2);
+			ft_putstr_fd(": Is a directory\n", 2);
+			exit(126);
+		}
+		execve(home, cmd->args, shell->env);
+		handle_exec_error(home);
+	}
+	if (cmd->args && cmd->args[0] && ft_strcmp(cmd->args[0], ".") == 0
+		&& !cmd->args[1])
+		mis_exec_dot_error();
+}
+
 void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 {
 	char	*path;
 
-	if (cmd->args && cmd->args[0] && ft_strcmp(cmd->args[0], ".") == 0
-		&& !cmd->args[1])
-		mis_exec_dot_error();
+	handle_special_cases(cmd, shell);
 	if (!cmd || !cmd->args || !cmd->args[0])
 		exit(0);
 	if (mis_redirections(cmd->redirs) == -1)
