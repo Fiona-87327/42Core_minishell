@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 18:45:31 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 19:58:30 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/27 11:35:56 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,24 @@ static void	update_pwds(t_minishell *shell, char *old_pwd)
 
 static void	perform_cd_exec(t_minishell *shell, char *dir, char *arg, char *old)
 {
+	struct stat	st;
+
 	if (chdir(dir) != 0)
 	{
 		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		if (arg)
-			ft_putstr_fd(arg, STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		if (access(dir, F_OK) != 0)
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		else
+		{
+			stat(dir, &st);
+			if (!S_ISDIR(st.st_mode))
+				ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
+			else if (access(dir, X_OK) != 0)
+				ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+			else
+				ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		}
 		shell->exit_status = 1;
 	}
 	else
