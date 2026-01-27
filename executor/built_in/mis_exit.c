@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:54:41 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 10:35:12 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/27 08:35:01 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	mis_exit(t_command *cmd, t_minishell *shell)
 		if (cmd->args[2])
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n",
-							STDERR_FILENO);
+				STDERR_FILENO);
 			shell->exit_status = 1;
 			return ;
 		}
