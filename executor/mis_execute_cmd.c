@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/18 12:41:01 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/25 16:16:23 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:25:58 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@ static int	execute_redirs_cmd(t_command *cmd, t_minishell *shell)
 	{
 		setchild_signals();
 		if (mis_redirections(cmd->redirs) == -1)
+		{
+			ft_free_array(shell->env);
 			exit(1);
+		}
 		execute_builtin_cmd(cmd, shell);
+		ft_free_array(shell->env);
 		exit(shell->exit_status);
 	}
 	waitpid(pid, &status, 0);

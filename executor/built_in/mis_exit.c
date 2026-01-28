@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 19:54:41 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/27 13:42:12 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:11:45 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static int	handle_too_many_args(t_minishell *shell)
 	shell->should_exit = 1;
 	return (1);
 }
+
 void	mis_exit(t_command *cmd, t_minishell *shell)
 {
 	if (isatty(STDIN_FILENO))

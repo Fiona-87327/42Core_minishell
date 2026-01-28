@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mis_exec_helper.c                                  :+:      :+:    :+:   */
+/*   mis_exec_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 20:35:25 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 20:37:11 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:40:52 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,13 @@ void	mis_exec_dot_error(void)
 	exit(2);
 }
 
-void	mis_exec_cmd_not_found(char *cmd)
+void	mis_exec_cmd_not_found(char *cmd, t_minishell *shell)
 {
 	ft_putstr_fd(cmd, 2);
 	ft_putendl_fd(": command not found", 2);
+	shell->exit_status = 127;
+	ft_free_array(shell->env);
+	free(cmd);
+		
 	exit(127);
 }

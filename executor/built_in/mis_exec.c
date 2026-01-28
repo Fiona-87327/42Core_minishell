@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/27 12:47:37 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:39:56 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,20 @@ void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 
 	handle_special_cases(cmd, shell);
 	if (!cmd || !cmd->args || !cmd->args[0])
+	{
+		ft_free_array(shell->env);
 		exit(0);
+	}
 	if (mis_redirections(cmd->redirs) == -1)
+	{
+		ft_free_array(shell->env);
 		exit(1);
+	}
 	check_directory(cmd->args[0]);
 	path = mis_exec_get_path(cmd, shell);
 	if (!path || ft_strcmp(cmd->args[0], ".") == 0 || ft_strcmp(cmd->args[0],
 			"..") == 0)
-		mis_exec_cmd_not_found(cmd->args[0]);
+		mis_exec_cmd_not_found(cmd->args[0], shell);
 	execve(path, cmd->args, shell->env);
 	handle_exec_error(path);
 }
@@ -106,6 +112,7 @@ void	mis_exec(t_command *cmd, t_minishell *shell)
 	{
 		setchild_signals();
 		mis_exec_cmd(cmd, shell);
+		ft_free_array(shell->env);
 		exit(1);
 	}
 	signal(SIGINT, SIG_IGN);

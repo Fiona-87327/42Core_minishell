@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 18:54:43 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/26 17:47:41 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:41:56 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,21 @@ void	execute_child_command(t_command *cmd, t_minishell *shell)
 	if (!cmd->args || !cmd->args[0])
 	{
 		if (mis_redirections(cmd->redirs) == -1)
+		{
+			ft_free_array(shell->env);
 			exit(1);
+		}
 		exit(0);
 	}
 	if (is_builtin(cmd->args[0]))
 	{
 		if (mis_redirections(cmd->redirs) == -1)
+		{
+			ft_free_array(shell->env);
 			exit(1);
+		}
 		run_builtin(cmd, shell);
+		ft_free_array(shell->env);
 		exit(shell->exit_status);
 	}
 	else

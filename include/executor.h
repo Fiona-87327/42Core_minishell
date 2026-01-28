@@ -6,7 +6,7 @@
 /*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/27 13:03:50 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:20:39 by jiyawang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_command
 
 typedef struct s_minishell
 {
+	struct s_command			*cmds;
 	char						**env;
 	int							exit_status;
 	int							should_exit;
@@ -69,7 +70,7 @@ char							*handle_cd_args(char *arg, t_minishell *shell);
 void							handle_exec_error(char *cmd);
 void							check_directory(char *path);
 void							mis_exec_dot_error(void);
-void							mis_exec_cmd_not_found(char *cmd);
+void							mis_exec_cmd_not_found(char *cmd, t_minishell *shell);
 void							setup_signal(void);
 void							check_ctrl_c(t_minishell *shell);
 void							mis_signal_handler(int sig);
