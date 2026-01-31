@@ -61,6 +61,8 @@ void	handle_input(char *input, t_minishell *shell)
 		shell->exit_status = 1;
 		return ;
 	}
+	shell->cmds = cmds;
 	process_and_executor(cmds, shell);
 	free_cmds(cmds);
+	shell->cmds = NULL;
 }

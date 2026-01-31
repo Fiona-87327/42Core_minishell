@@ -50,10 +50,12 @@ static int	execute_redirs_cmd(t_command *cmd, t_minishell *shell)
 		if (mis_redirections(cmd->redirs) == -1)
 		{
 			ft_free_array(shell->env);
+			free_cmds(shell->cmds);
 			exit(1);
 		}
 		execute_builtin_cmd(cmd, shell);
 		ft_free_array(shell->env);
+		free_cmds(shell->cmds);
 		exit(shell->exit_status);
 	}
 	waitpid(pid, &status, 0);

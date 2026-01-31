@@ -69,11 +69,11 @@ static void	handle_special_cases(t_command *cmd, t_minishell *shell)
 			exit(126);
 		}
 		execve(home, cmd->args, shell->env);
-		handle_exec_error(home);
+		handle_exec_error(home, shell);
 	}
 	if (cmd->args && cmd->args[0] && ft_strcmp(cmd->args[0], ".") == 0
 		&& !cmd->args[1])
-		mis_exec_dot_error();
+		mis_exec_dot_error(shell);
 }
 
 void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
@@ -84,20 +84,26 @@ void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 	if (!cmd || !cmd->args || !cmd->args[0])
 	{
 		ft_free_array(shell->env);
+		free_cmds(shell->cmds);
 		exit(0);
 	}
 	if (mis_redirections(cmd->redirs) == -1)
 	{
 		ft_free_array(shell->env);
+		free_cmds(shell->cmds);
 		exit(1);
 	}
-	check_directory(cmd->args[0]);
+	check_directory(cmd->args[0], shell);
 	path = mis_exec_get_path(cmd, shell);
 	if (!path || ft_strcmp(cmd->args[0], ".") == 0 || ft_strcmp(cmd->args[0],
 			"..") == 0)
+	{
+		if (path && path != cmd->args[0])
+			free(path);
 		mis_exec_cmd_not_found(cmd->args[0], shell);
+	}
 	execve(path, cmd->args, shell->env);
-	handle_exec_error(path);
+	handle_exec_error(path, shell);
 }
 
 void	mis_exec(t_command *cmd, t_minishell *shell)
@@ -113,6 +119,7 @@ void	mis_exec(t_command *cmd, t_minishell *shell)
 		setchild_signals();
 		mis_exec_cmd(cmd, shell);
 		ft_free_array(shell->env);
+		free_cmds(shell->cmds);
 		exit(1);
 	}
 	signal(SIGINT, SIG_IGN);

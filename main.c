@@ -119,6 +119,7 @@ int	main(int ac, char **av, char **envp)
 		shell.env = init_min_env();
 	shell.exit_status = 0;
 	shell.should_exit = 0;
+	shell.cmds = NULL;
 	minishell_loop(&shell);
 	ft_free_array(shell.env);
 	return (shell.exit_status);

@@ -47,8 +47,10 @@ void	execute_child_command(t_command *cmd, t_minishell *shell)
 		if (mis_redirections(cmd->redirs) == -1)
 		{
 			ft_free_array(shell->env);
+			free_cmds(shell->cmds);
 			exit(1);
 		}
+		free_cmds(shell->cmds);
 		exit(0);
 	}
 	if (is_builtin(cmd->args[0]))
@@ -56,10 +58,12 @@ void	execute_child_command(t_command *cmd, t_minishell *shell)
 		if (mis_redirections(cmd->redirs) == -1)
 		{
 			ft_free_array(shell->env);
+			free_cmds(shell->cmds);
 			exit(1);
 		}
 		run_builtin(cmd, shell);
 		ft_free_array(shell->env);
+		free_cmds(shell->cmds);
 		exit(shell->exit_status);
 	}
 	else

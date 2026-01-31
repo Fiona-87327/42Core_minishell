@@ -56,6 +56,10 @@ void	free_cmds(t_command *cmds)
 			free(r_tmp->filename);
 			free(r_tmp);
 		}
+		if (tmp->redir_in)
+			free(tmp->redir_in);
+		if (tmp->redir_out)
+			free(tmp->redir_out);
 		free(tmp);
 	}
 }

@@ -85,6 +85,7 @@ void	mis_pipes(t_command *cmd, t_minishell *shell)
 		{
 			setchild_signals();
 			setup_pipe_fds(pipes, cmd_index, num_commands);
+			free_pipes_memory(pipes, num_commands - 1);
 			execute_child_command(cmd, shell);
 		}
 		cmd = cmd->next;
