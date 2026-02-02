@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_execute_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/18 12:41:01 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/27 19:25:58 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:23:11 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,27 @@ static void	execute_builtin_cmd(t_command *cmd, t_minishell *shell)
 		mis_exec(cmd, shell);
 }
 
+static void	handle_fork_error(t_minishell *shell)
+{
+	perror("fork");
+	shell->exit_status = 1;
+}
+
+static void	execute_child_process(t_command *cmd, t_minishell *shell)
+{
+	setchild_signals();
+	if (mis_redirections(cmd->redirs) == -1)
+	{
+		ft_free_array(shell->env);
+		free_cmds(shell->cmds);
+		exit(1);
+	}
+	execute_builtin_cmd(cmd, shell);
+	ft_free_array(shell->env);
+	free_cmds(shell->cmds);
+	exit(shell->exit_status);
+}
+
 static int	execute_redirs_cmd(t_command *cmd, t_minishell *shell)
 {
 	pid_t	pid;
@@ -40,24 +61,11 @@ static int	execute_redirs_cmd(t_command *cmd, t_minishell *shell)
 	pid = fork();
 	if (pid < 0)
 	{
-		perror("fork");
-		shell->exit_status = 1;
+		handle_fork_error(shell);
 		return (0);
 	}
 	if (pid == 0)
-	{
-		setchild_signals();
-		if (mis_redirections(cmd->redirs) == -1)
-		{
-			ft_free_array(shell->env);
-			free_cmds(shell->cmds);
-			exit(1);
-		}
-		execute_builtin_cmd(cmd, shell);
-		ft_free_array(shell->env);
-		free_cmds(shell->cmds);
-		exit(shell->exit_status);
-	}
+		execute_child_process(cmd, shell);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		shell->exit_status = WEXITSTATUS(status);

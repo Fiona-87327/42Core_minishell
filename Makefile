@@ -25,6 +25,7 @@ SRCS = executor/built_in/mis_cd.c \
 	   executor/mis_execute_cmd.c \
 	   executor/mis_input_handle.c \
 	   executor/mis_pipes.c \
+	   executor/mis_pipes_utils.c \
 	   parser/expansion_utils.c \
 	   parser/expansion.c \
 	   parser/lexer_utils.c \

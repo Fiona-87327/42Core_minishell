@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:02:44 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/31 16:22:19 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:40:37 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,16 @@ void							free_pipes_memory(int **pipes, int num_pipes);
 void							wait_all_children(pid_t last_pid,
 									t_minishell *shell);
 char							**init_min_env(void);
+void							finalize_pipes_and_wait(int **pipes,
+									int num_pipes, pid_t last_pid,
+									t_minishell *shell);
+void							close_pipes(int **pipes, int num_pipes);
+void							exit_clean(t_minishell *shell, int code);
 
 /* Redirections */
 int								mis_redirections(t_redir *redir);
 void							process_heredocs(t_command *cmds,
 									t_minishell *shell);
-void							execute_with_pipes(t_command *cmds);
 void							execute_child_command(t_command *cmd,
 									t_minishell *shell);
 void							execute_command(t_command *cmd,

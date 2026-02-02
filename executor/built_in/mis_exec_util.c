@@ -3,43 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   mis_exec_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 20:35:25 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/28 11:40:52 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:54:55 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	exit_with_error(char *cmd, char *msg, int code, t_minishell *shell)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
+	free_cmds(shell->cmds);
+	ft_free_array(shell->env);
+	exit(code);
+}
 
 void	handle_exec_error(char *cmd, t_minishell *shell)
 {
 	struct stat	st;
 
 	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-		free_cmds(shell->cmds);
-		ft_free_array(shell->env);
-		exit(126);
-	}
+		exit_with_error(cmd, "Is a directory", 126, shell);
 	if (errno == EACCES)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-		free_cmds(shell->cmds);
-		ft_free_array(shell->env);
-		exit(126);
-	}
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
-	free_cmds(shell->cmds);
-	ft_free_array(shell->env);
-	exit(127);
+		exit_with_error(cmd, "Permission denied", 126, shell);
+	exit_with_error(cmd, "No such file or directory", 127, shell);
 }
 
 void	check_directory(char *path, t_minishell *shell)

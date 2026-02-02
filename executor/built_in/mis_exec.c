@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:30:00 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/28 11:39:56 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:48:53 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,9 @@ void	mis_exec_cmd(t_command *cmd, t_minishell *shell)
 
 	handle_special_cases(cmd, shell);
 	if (!cmd || !cmd->args || !cmd->args[0])
-	{
-		ft_free_array(shell->env);
-		free_cmds(shell->cmds);
-		exit(0);
-	}
+		exit_clean(shell, 0);
 	if (mis_redirections(cmd->redirs) == -1)
-	{
-		ft_free_array(shell->env);
-		free_cmds(shell->cmds);
-		exit(1);
-	}
+		exit_clean(shell, 1);
 	check_directory(cmd->args[0], shell);
 	path = mis_exec_get_path(cmd, shell);
 	if (!path || ft_strcmp(cmd->args[0], ".") == 0 || ft_strcmp(cmd->args[0],

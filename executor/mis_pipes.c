@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mis_pipes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiyawang <jiyawang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhnatovs <mhnatovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 16:09:32 by jiyawang          #+#    #+#             */
-/*   Updated: 2026/01/24 14:51:23 by jiyawang         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:35:39 by mhnatovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	count_commands(t_command *cmd)
 	return (len);
 }
 
-static void	close_pipes(int **pipes, int num_pipes)
+void	close_pipes(int **pipes, int num_pipes)
 {
 	int	i;
 
@@ -91,7 +91,5 @@ void	mis_pipes(t_command *cmd, t_minishell *shell)
 		cmd = cmd->next;
 		cmd_index++;
 	}
-	close_pipes(pipes, num_commands - 1);
-	wait_all_children(pid, shell);
-	free_pipes_memory(pipes, num_commands - 1);
+	finalize_pipes_and_wait(pipes, num_commands - 1, pid, shell);
 }
