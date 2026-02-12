@@ -6,8 +6,6 @@
 ![42](https://img.shields.io/badge/42-Project-success.svg)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)
 
-*This project has been created as part of the 42 curriculum by jiyanwang, mhnatovs*
-
 `minishell` is a core project of the 42 curriculum, designed to implement a simplified Unix shell from scratch. This project involves a deep dive into process management, system calls, signal handling, and complex string parsing.
 
 ---
